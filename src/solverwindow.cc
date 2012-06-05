@@ -119,7 +119,19 @@ void SolverWindow::save()
 	solverwindow_sudokuwidget->get_values(sudoku);
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
-			textstream << sudoku.value(row, column) << '\n';
+			textstream << sudoku.value(row, column);
+			if (column < 8) {
+				textstream  << ' ';
+				if ((column % 3) == 2) {
+					textstream  << ' ';
+				}
+					
+			} else {
+				textstream  << '\n';
+			}
+		}
+		if ((row < 8) && ((row % 3) == 2)) {
+			textstream  << '\n';
 		}
 	}
 	
