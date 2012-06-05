@@ -1,0 +1,27 @@
+
+SUDOKU SOLVER
+	
+	I'm not a fervent sudoku solver but I always wanted to try implementing
+	a program to solve the puzzles faster than I can. This is my first attempt.
+	
+	This program uses the Qt library for its user interface, you will need
+	to have it installed to run the program.
+	
+BUILDING INSTRUCTIONS
+
+	Basic building instructions
+
+		mkdir build
+		cd build
+		../configure
+		make
+		
+	The binary will be called 'sudokusolver' and be located in the 'src' directory.
+	
+COPYRIGHT
+
+	This sudoku solver was written by Stijn "Ingar" Buys and is available under
+	the terms and conditions of the GNU Public License (GPL)
+	
+	ingar@telenet.be
+	htpt://ingar.satgnu.net
