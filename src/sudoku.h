@@ -1,22 +1,24 @@
 
-#ifndef __INCLUDED_SUDOSOLVE_SUDOKU__
-#define __INCLUDED_SUDOSOLVE_SUDOKU__
+#ifndef __INCLUDED_SUDOKUSOLVER_SUDOKU__
+#define __INCLUDED_SUDOKUSOLVER_SUDOKU__
 
-#include <QtGui>
-#include <QWidget>
-
-class QLineEdit;
-
-class Sudoku : public QWidget
-{
-	Q_OBJECT
+class Sudoku {
 	
 public:
 	Sudoku();
-
+	
+	// inspector
+	inline int value(int row, int column) const {
+		return sudoku_value[row][column];
+	}
+	
+	// mutator
+	inline int & value(int row, int column) {
+		return sudoku_value[row][column];
+	}
+	
 private:
-	QLineEdit	* sudoku_value[9][9];
-
+	int sudoku_value[9][9];
 };
 
-#endif // __INCLUDED_SUDOSOLVE_SUDOKU__
+#endif // __INCLUDED_SUDOKUSOLVER_SUDOKU__

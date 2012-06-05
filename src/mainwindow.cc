@@ -1,10 +1,9 @@
 
 #include "mainwindow.h"
-#include "sudoku.h"
+#include "solverwindow.h"
 
 MainWindow::MainWindow()
 {
-	mainwindow_sudoku = new Sudoku();
-	
-	setCentralWidget(mainwindow_sudoku);
+	SolverWindow *solverwindow = new SolverWindow();	
+	setCentralWidget(solverwindow);
 }

@@ -1,11 +1,11 @@
 
-#ifndef __INCLUDED_SUDOSOLVE_MAINWINDOW__
-#define __INCLUDED_SUDOSOLVE_MAINWINDOW__
+#ifndef __INCLUDED_SUDOKUSOLVER_MAINWINDOW__
+#define __INCLUDED_SUDOKUSOLVER_MAINWINDOW__
 
 #include <QtGui> 
 #include <QMainWindow>
 
-class Sudoku;
+class SudokuWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -13,10 +13,6 @@ class MainWindow : public QMainWindow
 	
 public:
 	MainWindow();
-
-private:
-	Sudoku	*mainwindow_sudoku;
-
 };
 
-#endif // __INCLUDED_SUDOSOLVE_MAINWINDOW__
+#endif // __INCLUDED_SUDOKUSOLVER_MAINWINDOW__
