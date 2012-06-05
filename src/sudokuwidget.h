@@ -5,6 +5,8 @@
 #include <QtGui>
 #include <QWidget>
 
+#include "sudoku.h"
+
 class QLineEdit;
 
 class SudokuWidget : public QWidget
@@ -13,6 +15,16 @@ class SudokuWidget : public QWidget
 	
 public:
 	SudokuWidget();
+	
+	/**
+	 * @brief set widgets value from sudoku values
+	 * */
+	void set_values(const Sudoku & values);
+	
+	/**
+	 * @brief set sudoku values from widget values
+	 * */
+	void get_values(Sudoku & values);
 
 private:
 	QLineEdit	* sudokuwidget_value[9][9];
