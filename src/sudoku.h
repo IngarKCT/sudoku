@@ -17,6 +17,8 @@ public:
 		return sudoku_value[row][column];
 	}
 	
+	int solve_step(int pos_row, int pos_column);
+	
 private:
 	int sudoku_value[9][9];
 };

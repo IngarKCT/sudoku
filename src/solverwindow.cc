@@ -150,4 +150,20 @@ void SolverWindow::clear()
 
 void SolverWindow::step()
 {
+	int nbSolutions = 0;
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	
+	Sudoku solution;
+	for (int row = 0; row < 9; row++) {
+		for (int column = 0; column < 9; column++) {
+			int i = sudoku.solve_step(row, column);
+			if ((i > 0) && (sudoku.value(row, column) == 0)) {
+				nbSolutions++;
+			}
+			solution.value(row, column) = i;
+		}
+	}
+	solverwindow_sudokuwidget->set_values(solution);
+	qDebug() << nbSolutions << " cells solved";
 }
