@@ -58,7 +58,7 @@ case $host in
   MINGW32*)
     AC_MSG_NOTICE(win32)
     QTLIBS="-L$QTLIBDIR -lgdi32 -luser32 -lmingw32 -lqtmain -lQtGui4 -lQtCore4 -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-s -Wl,-subsystem,windows"
-    QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/include/QtGui -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
+    QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/QtGui -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
     QTBIN="$QTDIR/bin"
     ;;
   *)
