@@ -17,11 +17,37 @@ BUILDING INSTRUCTIONS
 		make
 		
 	The binary will be called 'sudokusolver' and be located in the 'src' directory.
+
+USAGE
+
+	Running the program will show the main window, which consists of a basic
+	sudoku grid (9x9) and a number of buttons.
+
+	The SAVE button allows you to save the current sudoku puzzle to a file,
+	like wise, the LOAD button allwos you to load a previously saved sudoko.
+
+	The file format is extremely simple: the files can be opened and edited
+	with a text editor. Note that empty (unsolved) positions are saved as well.
+
+	The CLEAR button will clear any previously entered numbers.
+
+	The STEP button can be used to solve the puzzle. If clicked, the program
+	will verify each empty cell. If a unique solution can be found for a cell,
+	it will be added to the solution. You will probably need to click STEP
+	several times to completely solve a puzzle.
+
+LIMITATIONS
+
+	The current solving algorithm will only find a complete solution as long
+	as there are cells for which a unique solution through elimination can be found.
+	It cannot perform an exhautive search if the sudoko contains only cells for 
+	which at least 2 solutions can be found.
+	
 	
 COPYRIGHT
 
 	This sudoku solver was written by Stijn "Ingar" Buys and is available under
-	the terms and conditions of the GNU Public License (GPL)
+	the terms and conditions of the GNU Public License (GPL).
 	
 	ingar@telenet.be
 	htpt://ingar.satgnu.net
