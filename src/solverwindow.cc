@@ -85,7 +85,7 @@ void SolverWindow::load()
 		for (int column = 0; column < 9 ; column++) {
 			int i;
 			textstream >> i;
-			sudoku.value(row, column) = i;
+			sudoku.set_value(row, column, i);
 		}
 	}
 	solverwindow_sudokuwidget->set_values(sudoku);
@@ -150,20 +150,21 @@ void SolverWindow::clear()
 
 void SolverWindow::step()
 {
-	int nbSolutions = 0;
+	int cells_solved = 0;
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
 	
 	Sudoku solution;
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9; column++) {
-			int i = sudoku.solve_step(row, column);
-			if ((i > 0) && (sudoku.value(row, column) == 0)) {
-				nbSolutions++;
+			solution.set_value(row, column, sudoku.solve_step(row, column));
+			
+			if ((sudoku.value(row, column) == 0) && (solution.value(row, column) > 0)) {
+				cells_solved++;
 			}
-			solution.value(row, column) = i;
+			
 		}
 	}
 	solverwindow_sudokuwidget->set_values(solution);
-	qDebug() << nbSolutions << " cells solved";
+	qDebug() << cells_solved << " cells solved";
 }

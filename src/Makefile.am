@@ -3,6 +3,7 @@ bin_PROGRAMS = sudokusolver
 # You have two .cpp files you wrote, editor.cpp and another.cpp
 # Remember to include the name of the resource file with the .cpp extension.
 sudokusolver_SOURCES = \
+	cell.cc \
 	main.cc \
 	mainwindow.cc \
 	solverwindow.cc \

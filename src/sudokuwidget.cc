@@ -23,6 +23,11 @@ SudokuWidget::SudokuWidget()
 	setLayout(gridlayout);
 }
 
+QSize SudokuWidget::sizeHint () const
+{
+        return QSize(512, 512);
+}
+
 void SudokuWidget::set_values(const Sudoku & values)
 {
 	for (int row = 0; row < 9; row++) {
@@ -46,9 +51,9 @@ void SudokuWidget::get_values(Sudoku & values)
 			QString str(sudokuwidget_value[row][column]->text());
 			int i = str.toInt(&ok);
 			if (ok && (i > 0) && (i <= 9)) {
-				values.value(row, column) = i;
+				values.set_value(row, column, i);
 			} else {
-				values.value(row, column) = 0;
+				values.set_value(row, column, 0);
 			}
 		}
 	}	

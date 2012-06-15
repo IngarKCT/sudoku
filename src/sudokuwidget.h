@@ -25,6 +25,8 @@ public:
 	 * @brief set sudoku values from widget values
 	 * */
 	void get_values(Sudoku & values);
+	
+	virtual QSize sizeHint() const;
 
 private:
 	QLineEdit	* sudokuwidget_value[9][9];
