@@ -9,16 +9,27 @@ class Sudoku {
 public:
 	Sudoku();
 	
-	// inspector
+	Sudoku(const Sudoku & other);
+	
+	void assign(const Sudoku & other);
+	
+	// inspectors
 	inline int value(int row, int column) const {
 		return sudoku_cell[row][column].value();
 	}
 	
-	// mutator
-	void set_value(int row, int column, int value);
+	// mutators
+	void validate();
 	
-	int solve_step(int pos_row, int pos_column);
+	void set_value(int row, int column, int cell_value);
 	
+	void validate_cell(int pos_row, int pos_column);
+	
+	int solve_constraints(int pos_row, int pos_column);
+	
+	void solve_constraints();
+	
+	void solve_coverage();
 private:
 	Cell sudoku_cell[9][9];
 };

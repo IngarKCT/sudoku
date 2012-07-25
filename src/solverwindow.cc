@@ -29,10 +29,15 @@ SolverWindow::SolverWindow()
 	sidebarlayout->addWidget(savebutton);
 	connect(savebutton, SIGNAL(clicked()), this, SLOT(save()));
 	
-	// add step button
-	QPushButton *stepbutton = new QPushButton(tr("Step"));
-	sidebarlayout->addWidget(stepbutton);
-	connect(stepbutton, SIGNAL(clicked()), this, SLOT(step()));
+	// add step constraints button
+	QPushButton *stepconstraintsbutton = new QPushButton(tr("Constraints"));
+	sidebarlayout->addWidget(stepconstraintsbutton);
+	connect(stepconstraintsbutton, SIGNAL(clicked()), this, SLOT(step_constraints()));
+
+	// add step coverage button
+	QPushButton *stepcoveragebutton = new QPushButton(tr("Coverage"));
+	sidebarlayout->addWidget(stepcoveragebutton);
+	connect(stepcoveragebutton, SIGNAL(clicked()), this, SLOT(step_coverage()));
 	
 	// add stretch
 	sidebarlayout->addStretch(1);
@@ -148,23 +153,20 @@ void SolverWindow::clear()
 	solverwindow_sudokuwidget->set_values(sudoku);
 }
 
-void SolverWindow::step()
+void SolverWindow::step_constraints()
 {
-	int cells_solved = 0;
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
-	
-	Sudoku solution;
-	for (int row = 0; row < 9; row++) {
-		for (int column = 0; column < 9; column++) {
-			solution.set_value(row, column, sudoku.solve_step(row, column));
-			
-			if ((sudoku.value(row, column) == 0) && (solution.value(row, column) > 0)) {
-				cells_solved++;
-			}
-			
-		}
-	}
-	solverwindow_sudokuwidget->set_values(solution);
-	qDebug() << cells_solved << " cells solved";
+	sudoku.solve_constraints();
+	solverwindow_sudokuwidget->set_values(sudoku);
+	//qDebug() << cells_solved << " cells solved";
+}
+
+void SolverWindow::step_coverage()
+{
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	sudoku.solve_coverage();
+	solverwindow_sudokuwidget->set_values(sudoku);
+
 }

@@ -17,7 +17,8 @@ public slots:
 	
 	void load();
 	void save();
-	void step();
+	void step_constraints();
+	void step_coverage();
 	void clear();
 	
 private:
