@@ -157,16 +157,16 @@ void SolverWindow::step_constraints()
 {
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
-	sudoku.solve_constraints();
+	int solved = sudoku.solve_constraints();
 	solverwindow_sudokuwidget->set_values(sudoku);
-	//qDebug() << cells_solved << " cells solved";
+	qDebug() << solved << " cells solved";
 }
 
 void SolverWindow::step_coverage()
 {
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
-	sudoku.solve_coverage();
+	int solved = sudoku.solve_coverage();
 	solverwindow_sudokuwidget->set_values(sudoku);
-
+	qDebug() << solved << " cells solved";
 }

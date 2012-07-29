@@ -19,7 +19,21 @@ void Sudoku::assign(const Sudoku & other)
 		}
 	}
 }
-	
+
+int Sudoku::compare_and_assign(const Sudoku & other)
+{
+	int d = 0;
+	for (int row = 0; row < 9; row++) {
+		for (int column = 0; column < 9; column++) {
+			if (sudoku_cell[row][column].value() != other.sudoku_cell[row][column].value()) {
+				d++;
+			}
+			sudoku_cell[row][column].assign(other.sudoku_cell[row][column]);
+		}
+	}
+	return d;
+}
+
 void Sudoku::set_value(int row, int column, int cell_value)
 {
 	sudoku_cell[row][column].set_value(cell_value);
@@ -85,7 +99,7 @@ void Sudoku::validate_cell(int pos_row, int pos_column)
  * 	value from 1-9 has to appear exactly once in each row, column and subgrid
  * 	Cells with a unique solution are solved
  */
-void Sudoku::solve_coverage()
+int Sudoku::solve_coverage()
 {
 	// calculate cell.possibilities
 	validate();
@@ -99,6 +113,8 @@ void Sudoku::solve_coverage()
 		for (int row = 0; row < 9; row++) {
 			int available_column = 0;
 			int covered = 0;
+			
+			// verify if there's exactly one possibility for v in this row
 			for (int column = 0; column < 9 ; column++) {
 				if (!value(row, column) && sudoku_cell[row][column].possibility(v - 1)) {
 					// value is still possible for this cell
@@ -117,6 +133,8 @@ void Sudoku::solve_coverage()
 		for (int column = 0; column < 9; column++) {
 			int available_row = 0;
 			int covered = 0;
+			
+			// verify if there's exactly one possibility for v in this column
 			for (int row = 0; row < 9; row++) {
 				if (!value(row, column) && sudoku_cell[row][column].possibility(v - 1)) {
 					// value is still possible a single cell
@@ -132,8 +150,18 @@ void Sudoku::solve_coverage()
 		}
 		
 		// verify coverage for each subgrid
+		for (int subgrid = 0; subgrid < 9; subgrid++) {
+			
+			// TODO the subgrid and subgrididx indices need te be delinearized
+			// and translated into cell coordinates
+			
+			// verify if there's exactly one possibility for v in this subgrid
+			for  (int subgrididx = 0; subgrididx < 9; subgrididx++) {
+			}
+		}
 	}
-	assign(solution);
+	
+	return compare_and_assign(solution);
 }
 
 /*
@@ -141,7 +169,7 @@ void Sudoku::solve_coverage()
  * 	can appear only once in each column, row and subgrid
  * 	Cells with a unique solution are solved
  */
-void Sudoku::solve_constraints()
+int Sudoku::solve_constraints()
 {
 	Sudoku solution;
 	for (int row = 0; row < 9; row++) {
@@ -149,7 +177,8 @@ void Sudoku::solve_constraints()
 			solution.set_value(row, column, solve_constraints(row, column));
 		}
 	}
-	assign(solution);
+	
+	return compare_and_assign(solution);
 }
 
 int Sudoku::solve_constraints(int pos_row, int pos_column)

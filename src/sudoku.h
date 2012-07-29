@@ -13,12 +13,12 @@ public:
 	
 	void assign(const Sudoku & other);
 	
-	// inspectors
+	int compare_and_assign(const Sudoku & other);
+	
 	inline int value(int row, int column) const {
 		return sudoku_cell[row][column].value();
 	}
 	
-	// mutators
 	void validate();
 	
 	void set_value(int row, int column, int cell_value);
@@ -27,9 +27,10 @@ public:
 	
 	int solve_constraints(int pos_row, int pos_column);
 	
-	void solve_constraints();
+	int solve_constraints();
 	
-	void solve_coverage();
+	int solve_coverage();
+	
 private:
 	Cell sudoku_cell[9][9];
 };
