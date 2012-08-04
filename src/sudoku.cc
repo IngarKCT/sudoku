@@ -39,17 +39,18 @@ void Sudoku::set_value(int row, int column, int cell_value)
 	sudoku_cell[row][column].set_value(cell_value);
 }
 
-void Sudoku::validate()
+// reset the solution space and calculate possible values for all cells
+void Sudoku::reset()
 {
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9; column++) {
-			validate_cell(row, column);
+			reset_cell(row, column);
 		}
 	}
 }
 
-// validate_cell calculates the possible values for a cell
-void Sudoku::validate_cell(int pos_row, int pos_column)
+// reset the solution space for this cell and calculate possible values
+void Sudoku::reset_cell(int pos_row, int pos_column)
 {
 	// reset all possibilities for this cell
 	for (int possible_value = 0; possible_value < 9; possible_value++) {
@@ -102,7 +103,7 @@ void Sudoku::validate_cell(int pos_row, int pos_column)
 int Sudoku::solve_coverage()
 {
 	// calculate cell.possibilities
-	validate();
+	reset();
 	
 	Sudoku solution(*this);
 	
@@ -151,12 +152,30 @@ int Sudoku::solve_coverage()
 		
 		// verify coverage for each subgrid
 		for (int subgrid = 0; subgrid < 9; subgrid++) {
+			// global coordinates of the (0,0) element of the subgrid
+			const int sg_row = (subgrid / 3) * 3;
+			const int sg_column = (subgrid % 3) * 3;
 			
-			// TODO the subgrid and subgrididx indices need te be delinearized
-			// and translated into cell coordinates
-			
-			// verify if there's exactly one possibility for v in this subgrid
-			for  (int subgrididx = 0; subgrididx < 9; subgrididx++) {
+			// transle linear subgrid positions to row, col coordinate
+			for  (int subgrid_pos = 0; subgrid_pos < 9; subgrid_pos++) {
+				int sg_rowidx = sg_row + subgrid_pos / 3;
+				int sg_colidx = sg_column + subgrid_pos % 3;
+				int available_pos = 0;
+				int covered = 0;
+				
+				if (!value(sg_rowidx, sg_colidx) && sudoku_cell[sg_rowidx][sg_colidx].possibility(v - 1)) {
+					// value is still possible a single cell
+					available_pos = subgrid_pos;
+				} else {
+					covered++;
+				}
+				
+				if (covered == 8) {
+					// value is only possible for a single cell
+					int sg_rowidx = sg_row + available_pos / 3;
+					int sg_colidx = sg_column + available_pos % 3;
+					solution.set_value(sg_rowidx, sg_colidx, v);
+				}
 			}
 		}
 	}

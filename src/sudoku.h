@@ -19,11 +19,11 @@ public:
 		return sudoku_cell[row][column].value();
 	}
 	
-	void validate();
-	
 	void set_value(int row, int column, int cell_value);
 	
-	void validate_cell(int pos_row, int pos_column);
+	void reset();
+	
+	void reset_cell(int pos_row, int pos_column);
 	
 	int solve_constraints(int pos_row, int pos_column);
 	
