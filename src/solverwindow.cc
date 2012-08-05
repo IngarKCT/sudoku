@@ -53,7 +53,7 @@ SolverWindow::SolverWindow()
 	
 	// sudoku widget
 	solverwindow_sudokuwidget = new SudokuWidget();
-	windowlayout->addWidget(solverwindow_sudokuwidget);
+	windowlayout->addWidget(solverwindow_sudokuwidget, 1);
 	
 	// set window layout
 	setLayout(windowlayout);

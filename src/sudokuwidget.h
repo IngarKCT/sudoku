@@ -26,8 +26,22 @@ public:
 	 * */
 	void get_values(Sudoku & values);
 	
+	/**
+         * @brief return the default size hint for this widget
+         * */
 	virtual QSize sizeHint() const;
-
+	
+protected:	
+        /**
+         * @brief handle paint events
+         * */
+        virtual void paintEvent(QPaintEvent *event);
+	
+	/**
+	 * @brief handle resize events
+	 * */
+	virtual void resizeEvent(QResizeEvent *event);
+	
 private:
 	QLineEdit	* sudokuwidget_value[9][9];
 
