@@ -29,6 +29,11 @@ SolverWindow::SolverWindow()
 	sidebarlayout->addWidget(savebutton);
 	connect(savebutton, SIGNAL(clicked()), this, SLOT(save()));
 	
+	// add revert button
+	QPushButton *revertbutton = new QPushButton(tr("Revert"));
+	sidebarlayout->addWidget(revertbutton);
+	connect(revertbutton, SIGNAL(clicked()), this, SLOT(revert()));
+	
 	// add step constraints button
 	QPushButton *stepconstraintsbutton = new QPushButton(tr("Constraints"));
 	sidebarlayout->addWidget(stepconstraintsbutton);
@@ -94,10 +99,16 @@ void SolverWindow::load()
 		}
 	}
 	solverwindow_sudokuwidget->set_values(sudoku);
+	solverwindow_revertstate.assign(sudoku);
 	
 	file.close();
 	
 	QApplication::restoreOverrideCursor();
+}
+
+void SolverWindow::revert()
+{
+	solverwindow_sudokuwidget->set_values(solverwindow_revertstate);
 }
 
 void SolverWindow::save()
