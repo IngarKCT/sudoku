@@ -1,4 +1,6 @@
 
+// #include <QtGui>
+
 #include "sudoku.h"
 
 Sudoku::Sudoku()
@@ -81,6 +83,7 @@ void Sudoku::reset_cell(int pos_row, int pos_column)
 	// eliminate subgrid
 	int grid_row = pos_row - (pos_row % 3);
 	int grid_column = pos_column - (pos_column % 3);
+	
 	for (int row = grid_row; row < grid_row + 3; row++) {
 		for (int column = grid_column; column < grid_column + 3; column ++) {
 			if ((column != pos_column) && (row != pos_row)) {
@@ -127,6 +130,7 @@ int Sudoku::solve_coverage()
 			if (covered == 8) {
 				// value is only possible for a single cell
 				solution.set_value(row, available_column, v);
+				// qDebug() << "(" << row << "," <<  available_column << ") row covered, value " << v;
 			}
 		}
 		
@@ -147,6 +151,7 @@ int Sudoku::solve_coverage()
 			if (covered == 8) {
 				// value is only possible for a single cell
 				solution.set_value(available_row, column, v);
+				// qDebug() << "(" << available_row << "," <<  column << ") column covered, value " << v;
 			}
 		}
 		
@@ -156,7 +161,7 @@ int Sudoku::solve_coverage()
 			const int sg_row = (subgrid / 3) * 3;
 			const int sg_column = (subgrid % 3) * 3;
 			
-			// transle linear subgrid positions to row, col coordinate
+			// translate linear subgrid positions to row, col coordinate
 			for  (int subgrid_pos = 0; subgrid_pos < 9; subgrid_pos++) {
 				int sg_rowidx = sg_row + subgrid_pos / 3;
 				int sg_colidx = sg_column + subgrid_pos % 3;
@@ -172,9 +177,10 @@ int Sudoku::solve_coverage()
 				
 				if (covered == 8) {
 					// value is only possible for a single cell
-					int sg_rowidx = sg_row + available_pos / 3;
-					int sg_colidx = sg_column + available_pos % 3;
-					solution.set_value(sg_rowidx, sg_colidx, v);
+					int av_rowidx = sg_row + available_pos / 3;
+					int av_colidx = sg_column + available_pos % 3;
+					solution.set_value(av_rowidx, av_colidx, v);
+					// qDebug() << "(" << av_rowidx << "," <<  av_colidx << ") subgrid covered, value " << v;
 				}
 			}
 		}
