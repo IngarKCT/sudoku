@@ -23,16 +23,26 @@ QSize SudokuWidget::sizeHint () const
 }
 
 void SudokuWidget::set_values(const Sudoku & values)
-{
+{	
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
-			int i = values.value(row, column);
+			QPalette child_palette(palette());
+			int i = values.cell(row, column).value();
 			if (i > 0) {
 				QString str = QString::number(i);		
 				sudokuwidget_value[row][column]->setText(str);
+				
+				// set background color depending on the validity of the cell value
+				if (values.cell(row, column).valid()) {
+					//child_palette.setColor(QPalette::Base, QColor(0, 0, 255));
+				} else {
+					// FIXME colors should be configurable
+					child_palette.setColor(QPalette::Base, QColor(255, 0, 0));
+				}
 			} else {
 				sudokuwidget_value[row][column]->clear();
 			}
+			sudokuwidget_value[row][column]->setPalette(child_palette);
 		}
 	}
 }
@@ -45,9 +55,9 @@ void SudokuWidget::get_values(Sudoku & values)
 			QString str(sudokuwidget_value[row][column]->text());
 			int i = str.toInt(&ok);
 			if (ok && (i > 0) && (i <= 9)) {
-				values.set_value(row, column, i);
+				values.cell(row, column).set_value(i);
 			} else {
-				values.set_value(row, column, 0);
+				values.cell(row, column).set_value(0);
 			}
 		}
 	}	

@@ -15,14 +15,13 @@ public:
 	
 	int compare_and_assign(const Sudoku & other);
 	
-	inline int value(int row, int column) const {
-		return sudoku_cell[row][column].value();
-	}
-	
-	void set_value(int row, int column, int cell_value);
-	
 	void reset();
 	
+	bool validate();
+
+	/**
+	 * @brief reset solution space of the given cell
+	 * */
 	void reset_cell(int pos_row, int pos_column);
 	
 	int solve_constraints(int pos_row, int pos_column);
@@ -31,6 +30,15 @@ public:
 	
 	int solve_coverage();
 	
+	inline Cell & cell (int row, int column)
+	{
+		return sudoku_cell[row][column];
+	}
+	
+	inline const Cell & cell(int row, int column) const 
+	{
+		return sudoku_cell[row][column];
+	}
 private:
 	Cell sudoku_cell[9][9];
 };

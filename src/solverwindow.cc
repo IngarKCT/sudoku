@@ -9,6 +9,12 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
+/*
+ * FIXME
+ * On windows, this results in a rather awkward directory.
+ * The homepath should probably be a setting.
+ * */
+
 const QString HOMEDIR(QDir::homePath() + "/.sudoku");
 
 SolverWindow::SolverWindow()
@@ -43,6 +49,11 @@ SolverWindow::SolverWindow()
 	QPushButton *stepcoveragebutton = new QPushButton(tr("Coverage"));
 	sidebarlayout->addWidget(stepcoveragebutton);
 	connect(stepcoveragebutton, SIGNAL(clicked()), this, SLOT(step_coverage()));
+	
+	// add validate button
+	QPushButton *validatebutton = new QPushButton(tr("Validate"));
+	sidebarlayout->addWidget(validatebutton);
+	connect(validatebutton, SIGNAL(clicked()), this, SLOT(validate()));
 	
 	// add stretch
 	sidebarlayout->addStretch(1);
@@ -95,7 +106,7 @@ void SolverWindow::load()
 		for (int column = 0; column < 9 ; column++) {
 			int i;
 			textstream >> i;
-			sudoku.set_value(row, column, i);
+			sudoku.cell(row, column).set_value(i);
 		}
 	}
 	solverwindow_sudokuwidget->set_values(sudoku);
@@ -135,7 +146,7 @@ void SolverWindow::save()
 	solverwindow_sudokuwidget->get_values(sudoku);
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
-			textstream << sudoku.value(row, column);
+			textstream << sudoku.cell(row, column).value();
 			if (column < 8) {
 				textstream  << ' ';
 				if ((column % 3) == 2) {
@@ -181,3 +192,17 @@ void SolverWindow::step_coverage()
 	solverwindow_sudokuwidget->set_values(sudoku);
 	qDebug() << solved << " cells solved";
 }
+
+void SolverWindow::validate()
+{
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	if (sudoku.validate()) {
+		qDebug() << "sudoku is valid";
+	} else {
+		qDebug() << "sudoku is not valid";
+	}
+	solverwindow_sudokuwidget->set_values(sudoku);
+	qDebug() << "sudoku validated";
+}
+

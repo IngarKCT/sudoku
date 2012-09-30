@@ -23,6 +23,7 @@ public slots:
 	void step_constraints();
 	void step_coverage();
 	void clear();
+	void validate();
 	
 private:
 	SudokuWidget	*solverwindow_sudokuwidget;

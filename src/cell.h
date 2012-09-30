@@ -5,24 +5,59 @@
 class Cell {
 	
 public:
+	/**
+	 * @brief default constructor
+	 * */
 	Cell();
+	
+	/**
+	 * @brief copy constructor
+	 * */
 	Cell(const Cell & other);
 	
+	/**
+	 * @brief assignment operator
+	 * */
 	void assign(const Cell & other);
 	
-	// inspector
+	// inspectors
+
+	/**
+	 * @brief return true if a given value is a valid possibility for this cell
+	 * */
+	inline int possibility(const int value) { return cell_possibility[value]; }
+		
+	/**
+	 * @brief return true of the current value for this cell is a valid possibility
+	 * */
+	inline bool valid() const { return cell_valid; }
+	
+	/**
+	 * @brief return the current value for this cell_possibility
+	 * */
 	inline int value() const { return cell_value; }
 
-	inline int possibility(const int value) { return cell_possibility[value]; }
+	// mutators
 	
-	// mutator
-	void set_value(int value);
-	
+	/**
+	 * @brief set wether or not the given value is a valid possibility for a this cell
+	 * */
 	void set_possibility(int value, bool possible = true);
 	
+	/**
+	 * @brief set wether or not this cell is valid
+	 * */
+	void set_valid(bool valid);
+	
+	/**
+	 * @brief set the value for this cell
+	 * */
+	void set_value(int value);
+		
 private:
-	int cell_value;
 	bool cell_possibility[9];
+	bool cell_valid;
+	int cell_value;
 };
 
 #endif // __INCLUDED_SUDOKUSOLVER_CELL__
