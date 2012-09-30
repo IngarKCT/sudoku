@@ -1,8 +1,7 @@
-bin_PROGRAMS = sudokusolver
+bin_PROGRAMS = sudoku
 
-# You have two .cpp files you wrote, editor.cpp and another.cpp
-# Remember to include the name of the resource file with the .cpp extension.
-sudokusolver_SOURCES = \
+# Project C++ source files
+sudoku_SOURCES = \
 	cell.cc \
 	main.cc \
 	mainwindow.cc \
@@ -10,9 +9,8 @@ sudokusolver_SOURCES = \
 	sudoku.cc \
 	sudokuwidget.cc
 
-# You have one .h file, it's called editor.h. Therefore, here I list
-# its mocced name, moc_editor.cpp.
-nodist_sudokusolver_SOURCES = \
+# moc generated C++ source files
+nodist_sudoku_SOURCES = \
 	moc_mainwindow.cc \
 	moc_solverwindow.cc \
 	moc_sudokuwidget.cc
