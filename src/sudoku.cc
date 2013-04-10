@@ -115,8 +115,20 @@ void Sudoku::reset_cell(int pos_row, int pos_column)
 	
 	// set validity
 	if ((cell(pos_row,pos_column).value() > 0) && (cell(pos_row,pos_column).value() <= 9)) {
+	  
 		if (!sudoku_cell[pos_row][pos_column].possibility(sudoku_cell[pos_row][pos_column].value() - 1)) {
+			// cell is invalid if the current value is not possible
 			sudoku_cell[pos_row][pos_column].set_valid(false);
+		} else {
+			// cell is not valid if there are no possibilities
+			int n = 0;
+			for (int possible_value = 0; possible_value < 9; possible_value++) {
+				if (sudoku_cell[pos_row][pos_column].possibility(possible_value))
+					n++;
+			}
+			if (n == 0) {
+				sudoku_cell[pos_row][pos_column].set_valid(false);
+			}
 		}
 	}
 }
