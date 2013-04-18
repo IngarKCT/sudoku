@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
+#include <cstdlib>
 /*
  * FIXME
  * On windows, this results in a rather awkward directory.
@@ -33,7 +34,7 @@ SolverWindow::SolverWindow()
 	// add save button
 	QPushButton *savebutton = new QPushButton(tr("Save"));
 	sidebarlayout->addWidget(savebutton);
-	connect(savebutton, SIGNAL(clicked()), this, SLOT(save()));
+	connect(savebutton, SIGNAL(clicked()), this, SLOT(saveas()));
 	
 	// add revert button
 	QPushButton *revertbutton = new QPushButton(tr("Revert"));
@@ -65,8 +66,7 @@ SolverWindow::SolverWindow()
 	
 	// add sidebar layout
 	windowlayout->addLayout(sidebarlayout);
-	
-	
+		
 	// sudoku widget
 	solverwindow_sudokuwidget = new SudokuWidget();
 	windowlayout->addWidget(solverwindow_sudokuwidget, 1);
@@ -122,7 +122,7 @@ void SolverWindow::revert()
 	solverwindow_sudokuwidget->set_values(solverwindow_revertstate);
 }
 
-void SolverWindow::save()
+void SolverWindow::saveas()
 {
 	QString filename = QFileDialog::getSaveFileName(this, tr("Save as..."), HOMEDIR, "Sudoku (*.sudoku)");
 	if (filename.isEmpty()) {
@@ -173,6 +173,45 @@ void SolverWindow::clear()
 {
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->set_values(sudoku);
+}
+
+void SolverWindow::step()
+{
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	
+	Sudoku solution(sudoku);
+	int solved = solution.solve();
+	if (solved == 0) {
+		qDebug() << "no solveable cells left!";
+		return;
+	}
+	
+	// compare sudoku and solution values
+	int index_start = (int) random() % 81;	// TODO this should be a random number from 0 to 80
+	int index_current = index_start;
+	do {
+		int column = index_current % 9;
+		int row = (index_current - column) / 9;
+		if ((sudoku.cell(row,column).value() == 0) && (solution.cell(row,column).value() != 0)) {
+			sudoku.cell(row,column).set_value(solution.cell(row, column).value());
+			solverwindow_sudokuwidget->set_values(sudoku);
+			return;
+		}
+		
+		index_current = (index_current + 1) % 81;
+		
+	} while (index_current != index_start);
+	
+}
+
+void SolverWindow::solve()
+{
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	int solved = sudoku.solve();
+	solverwindow_sudokuwidget->set_values(sudoku);
+	qDebug() << solved << " cells solved";
 }
 
 void SolverWindow::step_constraints()

@@ -1,6 +1,4 @@
 
-// #include <QtGui>
-
 #include "sudoku.h"
 
 Sudoku::Sudoku()
@@ -35,12 +33,6 @@ int Sudoku::compare_and_assign(const Sudoku & other)
 	}
 	return d;
 }
-/*
-void Sudoku::set_value(int row, int column, int cell_value)
-{
-	sudoku_cell[row][column].set_value(cell_value);
-}
-*/
 
 // reset the solution space and calculate possible values for all cells
 void Sudoku::reset()
@@ -309,4 +301,17 @@ int Sudoku::solve_constraints(int pos_row, int pos_column)
 	} else {
 		return 0;
 	}
+}
+
+int Sudoku::solve()
+{
+	int solved_total = 0;
+	int solved_step = 0;
+	
+	do {
+		solved_step = solve_coverage() + solve_constraints();
+		solved_total += solved_step;
+	} while (solved_step > 0);
+	
+	return (solved_total);
 }

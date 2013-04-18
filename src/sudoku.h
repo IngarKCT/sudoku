@@ -30,6 +30,8 @@ public:
 	
 	int solve_coverage();
 	
+	int solve();
+	
 	inline Cell & cell (int row, int column)
 	{
 		return sudoku_cell[row][column];

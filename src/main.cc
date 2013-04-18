@@ -1,10 +1,18 @@
 
+#include "mainwindow.h"
+
 #include <QApplication>
 
-#include "mainwindow.h"
+#include <cstdlib>
 
 int main(int argc, char **argv)
 {
+	// TODO initialize random seed
+	/*
+	unsigned int seed = THE_SEED;
+	srandom(seed);
+	*/
+	
 	QApplication application(argc, argv);
 	MainWindow mainwindow;
 

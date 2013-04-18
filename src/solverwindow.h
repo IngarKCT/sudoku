@@ -18,8 +18,10 @@ public:
 public slots:
 	
 	void load();
-	void save();
+	void saveas();
 	void revert();
+	void solve();
+	void step();
 	void step_constraints();
 	void step_coverage();
 	void clear();
