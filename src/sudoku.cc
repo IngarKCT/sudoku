@@ -337,23 +337,23 @@ int Sudoku::solve_search()
 
 bool Sudoku::solve_search_step(int &iterations, Sudoku & solution)
 {
+	qDebug() << "iteration " << iterations;
+	for (int row = 0; row < 9; row ++) {
+		qDebug() 
+			<< cell(row, 0).value()
+			<< cell(row, 1).value()
+			<< cell(row, 2).value()
+			<< cell(row, 3).value()
+			<< cell(row, 4).value()
+			<< cell(row, 5).value()
+			<< cell(row, 6).value()
+			<< cell(row, 7).value()
+			<< cell(row, 8).value();
+	}
+	
 	if (solved()) {
 		solution.assign((*this));
 		return true;
-	} else {
-		qDebug() << "iteration " << iterations;
-		for (int row = 0; row < 9; row ++) {
-			qDebug() 
-				<< cell(row, 0).value()
-				<< cell(row, 1).value()
-				<< cell(row, 2).value()
-				<< cell(row, 3).value()
-				<< cell(row, 4).value()
-				<< cell(row, 5).value()
-				<< cell(row, 6).value()
-				<< cell(row, 7).value()
-				<< cell(row, 8).value();
-		}
 	}
 
 	// find a random empty cell

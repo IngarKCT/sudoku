@@ -29,12 +29,20 @@ void MainWindow::initActions()
 	action_load->setStatusTip(tr("Load a previously saved game"));
 	connect(action_load, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(load()));
 	
+	// Game -> Save
 	action_save = new QAction(tr("&Save"), this);
 	action_load->setStatusTip(tr("Save the current game"));
+	//TODO
 
+	// Game -> Save As
 	action_saveas = new QAction(tr("Save &As..."), this);
 	action_load->setStatusTip(tr("Save the current game to a new file"));
 	connect(action_saveas, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(saveas()));
+	
+	// Game -> Revert
+	action_revert = new QAction(tr("&Revert"), this);
+	action_revert->setStatusTip(tr("Reload the current game from file"));
+	connect(action_revert, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(revert()));
 	
 	// Game -> Quit
 	action_quit = new QAction(tr("&Quit"), this);
@@ -53,13 +61,13 @@ void MainWindow::initActions()
 	connect(action_step, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(step()));
 	
 	// Move -> Solve
-	action_solve = new QAction(tr("Solve"), this);
-	action_solve->setStatusTip(tr("Solve sudoku constraints"));
+	action_solve = new QAction(tr("Solve rules"), this);
+	action_solve->setStatusTip(tr("Solve sudoku rules"));
 	connect(action_solve, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(solve()));
 
 	// Move -> Search
-	action_search = new QAction(tr("Search"), this);
-	action_search->setStatusTip(tr("Search for a solution"));
+	action_search = new QAction(tr("Find solution"), this);
+	action_search->setStatusTip(tr("Find a solution"));
 	connect(action_search, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(search()));
 }
 
@@ -69,12 +77,14 @@ void MainWindow::initMenus()
 	mainwindow_gamemenu->addAction(action_new);
 	mainwindow_gamemenu->addAction(action_load);
 	mainwindow_gamemenu->addSeparator();
-	mainwindow_gamemenu->addAction(action_save);
+	//mainwindow_gamemenu->addAction(action_save);
 	mainwindow_gamemenu->addAction(action_saveas);
+	mainwindow_gamemenu->addAction(action_revert);
+	mainwindow_gamemenu->addSeparator();
 	mainwindow_gamemenu->addAction(action_quit);
 	
 	mainwindow_movemenu = menuBar()->addMenu(tr("&Move"));
-	mainwindow_movemenu->addAction(action_hint);
+	//mainwindow_movemenu->addAction(action_hint);
 	mainwindow_movemenu->addAction(action_step);
 	mainwindow_movemenu->addAction(action_solve);
 	mainwindow_movemenu->addAction(action_search);

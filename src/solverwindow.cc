@@ -24,7 +24,10 @@ SolverWindow::SolverWindow()
 	
 	
 	// sidebar
-	QVBoxLayout *sidebarlayout = new QVBoxLayout();	
+	QVBoxLayout *sidebarlayout = new QVBoxLayout();
+	
+	// add stretch
+	sidebarlayout->addStretch(1);
 	
 	// add load button
 	QPushButton *loadbutton = new QPushButton(tr("Load"));
@@ -40,29 +43,37 @@ SolverWindow::SolverWindow()
 	QPushButton *revertbutton = new QPushButton(tr("Revert"));
 	sidebarlayout->addWidget(revertbutton);
 	connect(revertbutton, SIGNAL(clicked()), this, SLOT(revert()));
-	
-	// add step constraints button
-	QPushButton *stepconstraintsbutton = new QPushButton(tr("Constraints"));
-	sidebarlayout->addWidget(stepconstraintsbutton);
-	connect(stepconstraintsbutton, SIGNAL(clicked()), this, SLOT(step_constraints()));
 
-	// add step coverage button
-	QPushButton *stepcoveragebutton = new QPushButton(tr("Coverage"));
-	sidebarlayout->addWidget(stepcoveragebutton);
-	connect(stepcoveragebutton, SIGNAL(clicked()), this, SLOT(step_coverage()));
-	
 	// add validate button
 	QPushButton *validatebutton = new QPushButton(tr("Validate"));
 	sidebarlayout->addWidget(validatebutton);
 	connect(validatebutton, SIGNAL(clicked()), this, SLOT(validate()));
 	
+	// add a step button
+	QPushButton *stepbutton = new QPushButton(tr("Step"));
+	sidebarlayout->addWidget(stepbutton);
+	connect(stepbutton, SIGNAL(clicked()), this, SLOT(step()));
+
 	// add stretch
-	sidebarlayout->addStretch(1);
+	sidebarlayout->addStretch(2);
+	
+	// add a solve button
+	QPushButton *solvebutton = new QPushButton(tr("Solve"));
+	sidebarlayout->addWidget(solvebutton);
+	connect(solvebutton, SIGNAL(clicked()), this, SLOT(solve()));
+	
+	// add a search button
+	QPushButton *searchbutton = new QPushButton(tr("Search"));
+	sidebarlayout->addWidget(searchbutton);
+	connect(searchbutton, SIGNAL(clicked()), this, SLOT(search()));
 	
 	// add clear button
 	QPushButton *clearbutton = new QPushButton(tr("Clear"));
 	sidebarlayout->addWidget(clearbutton);
 	connect(clearbutton, SIGNAL(clicked()), this, SLOT(clear()));
+	
+	// add stretch
+	sidebarlayout->addStretch(1);
 	
 	// add sidebar layout
 	windowlayout->addLayout(sidebarlayout);
@@ -119,6 +130,7 @@ void SolverWindow::load()
 
 void SolverWindow::revert()
 {
+	// FIXME this should actually re-load the savegame
 	solverwindow_sudokuwidget->set_values(solverwindow_revertstate);
 }
 

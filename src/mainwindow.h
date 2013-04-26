@@ -31,6 +31,7 @@ private:
 	QAction		*action_load;
 	QAction		*action_save;
 	QAction		*action_saveas;
+	QAction		*action_revert;
 	QAction		*action_quit;
 	
 	// Move menu actions
