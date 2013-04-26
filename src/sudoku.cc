@@ -1,6 +1,8 @@
 
 #include "sudoku.h"
 
+#include <QtGui>
+
 #include <cstdlib>
 
 Sudoku::Sudoku()
@@ -338,40 +340,67 @@ bool Sudoku::solve_search_step(int &iterations, Sudoku & solution)
 	if (solved()) {
 		solution.assign((*this));
 		return true;
+	} else {
+		qDebug() << "iteration " << iterations;
+		for (int row = 0; row < 9; row ++) {
+			qDebug() 
+				<< cell(row, 0).value()
+				<< cell(row, 1).value()
+				<< cell(row, 2).value()
+				<< cell(row, 3).value()
+				<< cell(row, 4).value()
+				<< cell(row, 5).value()
+				<< cell(row, 6).value()
+				<< cell(row, 7).value()
+				<< cell(row, 8).value();
+		}
 	}
 
-	int index_start = (int) random() % 81;
+	// find a random empty cell
+	const int index_start = (int) random() % 81;
 	int index_current = index_start;
-	do {
-		int column = index_current % 9;
-		int row = (index_current - column) / 9;
-		
-		if (cell(row, column).value() == 0) {
-			
-			// pick a possibility
-			for (int p = 0; p < 9; p++) {
-				if (cell(row, column).possibility(p) == true) {
-					Sudoku recursive(*this);
-					recursive.cell(row, column).set_value(p+1);
-					recursive.solve_rules();
-					
-					if (recursive.validate()) {
-						iterations++;
-						bool b = recursive.solve_search_step(iterations, solution);
-						if (b) {
-							return true;
-						}
-						
-					}
-				}
-			}
-			
-		}
-		
-		index_current = (index_current + 1) % 81;
 	
+	int column = index_current % 9;
+	int row = (index_current - column) / 9;
+	
+	do {		
+		if (cell(row, column).value() == 0) {
+			break;
+		} else {
+			index_current = (index_current + 1) % 81;
+			column = index_current % 9;
+			row = (index_current - column) / 9;
+		}
 	}  while (index_current != index_start);
-
+	
+	if ((index_current == index_start) && cell(row, column).value() != 0) {
+		return false;
+	}
+			
+	// the sudoku should be solvable for one of the nine possible values for this cell
+	
+	// start searching with a random value
+	const int value_start = (int) random() % 9;
+	
+	int value_current = value_start;
+	do {
+		if (cell(row, column).possibility(value_current) == true) {
+			Sudoku recursive(*this);
+			recursive.cell(row, column).set_value(value_current + 1);
+			recursive.solve_rules();
+			
+			if (recursive.validate()) {
+				iterations++;
+				if (recursive.solve_search_step(iterations, solution)) {
+					return true;
+				}
+				
+			}
+		}
+		value_current = (value_current + 1) % 9;
+		
+	} while (value_current != value_start);
+	
 	return false;
 }
 
