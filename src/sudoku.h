@@ -19,6 +19,8 @@ public:
 	
 	bool validate();
 
+	bool solved();
+	
 	/**
 	 * @brief reset solution space of the given cell
 	 * */
@@ -30,7 +32,15 @@ public:
 	
 	int solve_coverage();
 	
-	int solve();
+	/**
+	 * @brief solve the sudoku, using constraint and converage rules only
+	 * */
+	int solve_rules();
+	
+	/**
+	 * @brief solve the sudoku, using exhaustive search
+	 * */
+	int solve_search();
 	
 	inline Cell & cell (int row, int column)
 	{
@@ -42,6 +52,8 @@ public:
 		return sudoku_cell[row][column];
 	}
 private:
+	bool solve_search_step(int &iterations, Sudoku & solution);
+	
 	Cell sudoku_cell[9][9];
 };
 

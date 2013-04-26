@@ -37,6 +37,7 @@ private:
 	QAction		*action_hint;
 	QAction		*action_step;
 	QAction		*action_solve;
+	QAction		*action_search;
 
 };
 

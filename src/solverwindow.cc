@@ -181,14 +181,14 @@ void SolverWindow::step()
 	solverwindow_sudokuwidget->get_values(sudoku);
 	
 	Sudoku solution(sudoku);
-	int solved = solution.solve();
+	int solved = solution.solve_rules();
 	if (solved == 0) {
 		qDebug() << "no solveable cells left!";
 		return;
 	}
 	
 	// compare sudoku and solution values
-	int index_start = (int) random() % 81;	// TODO this should be a random number from 0 to 80
+	int index_start = (int) random() % 81;
 	int index_current = index_start;
 	do {
 		int column = index_current % 9;
@@ -209,9 +209,21 @@ void SolverWindow::solve()
 {
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
-	int solved = sudoku.solve();
+	int solved = sudoku.solve_rules();
+	sudoku.validate();
 	solverwindow_sudokuwidget->set_values(sudoku);
 	qDebug() << solved << " cells solved";
+}
+
+void SolverWindow::search()
+{
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	int iterations = sudoku.solve_search();
+	solverwindow_sudokuwidget->set_values(sudoku);
+	if (iterations > 0) {
+		qDebug() << "solved in " << iterations << " iterations";
+	}
 }
 
 void SolverWindow::step_constraints()

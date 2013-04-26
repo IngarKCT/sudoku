@@ -14,9 +14,8 @@ Cell::Cell(const Cell & other)
 	
 void Cell::assign(const Cell & other)
 {
-	cell_valid = other.cell_valid;
-	cell_value = other.cell_value;
-	cell_valid = other.cell_valid;
+	cell_valid = other.valid();
+	cell_value = other.value();
 	
 	for (int i = 0; i < 9; i++) {
 		cell_possibility[i] = other.cell_possibility[i];

@@ -1,6 +1,8 @@
 
 #include "sudoku.h"
 
+#include <cstdlib>
+
 Sudoku::Sudoku()
 {
 }
@@ -54,6 +56,22 @@ bool Sudoku::validate()
 		}
 	}
 	return v;
+}
+
+bool Sudoku::solved()
+{
+	bool s = true;
+	for (int row = 0; row < 9; row++) {
+		for (int column = 0; column < 9; column++) {
+			reset_cell(row, column);
+			if ((!cell(row, column).valid()) || (cell(row, column).value() == 0)) {
+				s = false;
+				
+			}
+		}
+	}
+
+	return s;
 }
 
 // reset the solution space for this cell and calculate possible values
@@ -303,7 +321,61 @@ int Sudoku::solve_constraints(int pos_row, int pos_column)
 	}
 }
 
-int Sudoku::solve()
+int Sudoku::solve_search()
+{
+	int nbiterations = 0;
+	bool b = solve_search_step( nbiterations, (*this));
+	if (b) {
+		return nbiterations;
+	} else {
+		return 0;
+	}
+
+}
+
+bool Sudoku::solve_search_step(int &iterations, Sudoku & solution)
+{
+	if (solved()) {
+		solution.assign((*this));
+		return true;
+	}
+
+	int index_start = (int) random() % 81;
+	int index_current = index_start;
+	do {
+		int column = index_current % 9;
+		int row = (index_current - column) / 9;
+		
+		if (cell(row, column).value() == 0) {
+			
+			// pick a possibility
+			for (int p = 0; p < 9; p++) {
+				if (cell(row, column).possibility(p) == true) {
+					Sudoku recursive(*this);
+					recursive.cell(row, column).set_value(p+1);
+					recursive.solve_rules();
+					
+					if (recursive.validate()) {
+						iterations++;
+						bool b = recursive.solve_search_step(iterations, solution);
+						if (b) {
+							return true;
+						}
+						
+					}
+				}
+			}
+			
+		}
+		
+		index_current = (index_current + 1) % 81;
+	
+	}  while (index_current != index_start);
+
+	return false;
+}
+
+int Sudoku::solve_rules()
 {
 	int solved_total = 0;
 	int solved_step = 0;
@@ -315,3 +387,4 @@ int Sudoku::solve()
 	
 	return (solved_total);
 }
+

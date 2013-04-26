@@ -21,6 +21,7 @@ public slots:
 	void saveas();
 	void revert();
 	void solve();
+	void search();
 	void step();
 	void step_constraints();
 	void step_coverage();

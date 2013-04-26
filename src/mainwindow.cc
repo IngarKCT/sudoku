@@ -54,8 +54,13 @@ void MainWindow::initActions()
 	
 	// Move -> Solve
 	action_solve = new QAction(tr("Solve"), this);
-	action_solve->setStatusTip(tr("Try to solve this game"));
+	action_solve->setStatusTip(tr("Solve sudoku constraints"));
 	connect(action_solve, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(solve()));
+
+	// Move -> Search
+	action_search = new QAction(tr("Search"), this);
+	action_search->setStatusTip(tr("Search for a solution"));
+	connect(action_search, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(search()));
 }
 
 void MainWindow::initMenus()
@@ -72,5 +77,6 @@ void MainWindow::initMenus()
 	mainwindow_movemenu->addAction(action_hint);
 	mainwindow_movemenu->addAction(action_step);
 	mainwindow_movemenu->addAction(action_solve);
+	mainwindow_movemenu->addAction(action_search);
 }
 
