@@ -1,0 +1,12 @@
+
+- Move->Step solves rules only. Have it search for a solution
+  and pick a solved cell.
+
+- Have the options in the Move menu call validate() before solving.
+
+- Incorporate validate() into the menu
+
+- Remove sidebar buttons
+
+- Add help
+
