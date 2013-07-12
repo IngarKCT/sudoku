@@ -1,5 +1,6 @@
 - Add Help->About
 - Add confirm dialgs on Quit and New
+- Mark invalid input
 
 - [VERIFY] Have the options in the Move menu call validate() before solving.
 - [VERIFY] Incorporate validate() into the menu

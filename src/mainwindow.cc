@@ -2,10 +2,35 @@
 #include "mainwindow.h"
 #include "solverwindow.h"
 
+/* XPM */
+const char *icon_xpm[] = {
+"16 16 2 1",
+" 	c #000000",
+".	c #FFFFFF",
+"                ",
+" .... .... .... ",
+" .... .... .... ",
+" .... .... .... ",
+" .... .... .... ",
+"                ",
+" .... .... .... ",
+" .... .... .... ",
+" .... .... .... ",
+" .... .... .... ",
+"                ",
+" .... .... .... ",
+" .... .... .... ",
+" .... .... .... ",
+" .... .... .... ",
+"                "};
+
+
 MainWindow::MainWindow()
 {
-	setWindowTitle(tr("Sudoku"));
 	
+	setWindowTitle(tr("Sudoku"));
+	setWindowIcon(QIcon(QPixmap(icon_xpm)));
+
 	mainwindow_solverwindow = new SolverWindow();	
 	setCentralWidget(mainwindow_solverwindow);
 	
