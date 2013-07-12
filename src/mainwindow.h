@@ -46,6 +46,7 @@ private:
 	
 private slots:
 	
+	void doNew();
 	void doSave();
 	void doSaveAs();
 	void doLoad();

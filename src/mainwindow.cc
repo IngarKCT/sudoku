@@ -21,7 +21,7 @@ void MainWindow::initActions()
 	action_new = new QAction(tr("&New"), this);
 	action_new->setShortcuts(QKeySequence::New);
 	action_new->setStatusTip(tr("Start a new game"));
-	connect(action_new, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(clear()));
+	connect(action_new, SIGNAL(triggered()), this, SLOT(doNew()));
 	
 	// Game -> Load
 	action_load = new QAction(tr("&Load..."), this);
@@ -111,6 +111,12 @@ void MainWindow::updateTitle()
 	} else {
 		setWindowTitle(mainwindow_solverwindow->filename() + " - Sudoku");
 	}
+}
+
+void MainWindow::doNew()
+{
+	mainwindow_solverwindow->clear();
+	updateTitle();
 }
 
 void MainWindow::doSave()

@@ -159,6 +159,8 @@ void SolverWindow::clear()
 {
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->set_values(sudoku);
+	
+	solverwindow_filename.clear();
 }
 
 void SolverWindow::step()
