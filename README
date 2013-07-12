@@ -20,7 +20,7 @@ BUILDING INSTRUCTIONS
 	The binary will be called 'sudokusolver' and be located in the 'src' directory.
 	You can run it from within the build directory:
 	
-		src/sudoku
+		src/sudokusolver
 
 USAGE
 
