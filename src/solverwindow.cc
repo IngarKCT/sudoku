@@ -9,7 +9,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <cstdlib>
 /*
  * FIXME
  * On windows, this results in a rather awkward directory.
@@ -181,7 +180,7 @@ void SolverWindow::doStep()
 	}
 	
 	// compare sudoku and solution values
-	int index_start = (int) random() % 81;
+	int index_start = qrand() % 81;
 	int index_current = index_start;
 	do {
 		int column = index_current % 9;
@@ -210,7 +209,7 @@ void SolverWindow::doGuess()
 	}
 	
 	// compare sudoku and solution values
-	int index_start = (int) random() % 81;
+	int index_start = qrand() % 81;
 	int index_current = index_start;
 	do {
 		int column = index_current % 9;

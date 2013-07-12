@@ -1,9 +1,7 @@
 
 #include "sudoku.h"
 
-// #include <QtGui>
-
-#include <cstdlib>
+#include <Qt>
 
 Sudoku::Sudoku()
 {
@@ -357,7 +355,7 @@ bool Sudoku::solve_search_step(int &iterations, Sudoku & solution)
 	}
 
 	// find a random empty cell
-	const int index_start = (int) random() % 81;
+	const int index_start = qrand() % 81;
 	int index_current = index_start;
 	
 	int column = index_current % 9;
@@ -380,7 +378,7 @@ bool Sudoku::solve_search_step(int &iterations, Sudoku & solution)
 	// the sudoku should be solvable for one of the nine possible values for this cell
 	
 	// start searching with a random value
-	const int value_start = (int) random() % 9;
+	const int value_start = qrand() % 9;
 	
 	int value_current = value_start;
 	do {

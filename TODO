@@ -2,6 +2,7 @@
 INGAR'S SUDOKU SOLVER - TODO
 
 	- Add Game->Settings (colors, homepath)
+	- Fixed homedir business on WIN32 (e.g. use Aplication data)
 	
 	- [SOLVED] Add confirm dialgs on Quit and New
 	- [SOLVED] Remove sidebar buttons
