@@ -5,6 +5,16 @@
 #include <QGridLayout>
 #include <QString>
 
+/*
+ * TODO
+ * This should be moved into a global configuration sectoion
+ * with a settings dialog
+ * */
+const QColor color_invalid_value(255, 0, 0);
+const QColor color_input_error(195, 195, 195);
+
+
+
 SudokuWidget::SudokuWidget()
 {
 	for (int row = 0; row < 9; row++) {
@@ -31,6 +41,11 @@ void SudokuWidget::verify(const QString & text)
 				values.cell(row, column).set_value(i);
 			} else {
 				values.cell(row, column).set_value(0);
+				QPalette child_palette(palette());
+				if (!sudokuwidget_value[row][column]->text().isEmpty()) {
+					child_palette.setColor(QPalette::Base, color_input_error);
+				}
+				sudokuwidget_value[row][column]->setPalette(child_palette);
 			}
 		}
 	}
@@ -44,11 +59,10 @@ void SudokuWidget::verify(const QString & text)
 			if ( (i > 0) && (i <= 9) ) {
 				// set background color depending on the validity of the cell value
 				if (!values.cell(row, column).valid()) {
-					// FIXME colors should be configurable
-					child_palette.setColor(QPalette::Base, QColor(255, 0, 0));
+					child_palette.setColor(QPalette::Base, color_invalid_value);
 				}
+				sudokuwidget_value[row][column]->setPalette(child_palette);
 			}
-			sudokuwidget_value[row][column]->setPalette(child_palette);
 		}
 	}
 }
@@ -69,11 +83,8 @@ void SudokuWidget::set_values(const Sudoku & values)
 				sudokuwidget_value[row][column]->setText(str);
 				
 				// set background color depending on the validity of the cell value
-				if (values.cell(row, column).valid()) {
-					//child_palette.setColor(QPalette::Base, QColor(0, 0, 255));
-				} else {
-					// FIXME colors should be configurable
-					child_palette.setColor(QPalette::Base, QColor(255, 0, 0));
+				if (!values.cell(row, column).valid()) {
+					child_palette.setColor(QPalette::Base, color_invalid_value);
 				}
 			} else {
 				sudokuwidget_value[row][column]->clear();

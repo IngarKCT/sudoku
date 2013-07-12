@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "solverwindow.h"
 
+#include "config.h"
+
 /* XPM */
 const char *icon_xpm[] = {
 "16 16 2 1",
@@ -107,6 +109,11 @@ void MainWindow::initActions()
 	action_validate = new QAction(tr("Validate"), this);
 	action_validate ->setStatusTip(tr("Validate the sudoku"));
 	connect(action_validate, SIGNAL(triggered()), this, SLOT(doValidate()));
+	
+	// Help -> About
+	action_about = new QAction(tr("About..."), this);
+	action_about ->setStatusTip(tr("About %1").arg(PACKAGE_NAME));
+	connect(action_about, SIGNAL(triggered()), this, SLOT(doAbout()));
 }
 
 void MainWindow::initMenus()
@@ -130,17 +137,20 @@ void MainWindow::initMenus()
 	mainwindow_movemenu->addAction(action_search);
 	mainwindow_movemenu->addSeparator();
 	mainwindow_movemenu->addAction(action_validate);
+	
+	mainwindow_helpmenu = menuBar()->addMenu(tr("&Help"));
+	mainwindow_helpmenu->addAction(action_about);
 }
 
 void MainWindow::updateTitle()
 {
 	if (mainwindow_solverwindow->filename().isEmpty()) {
-		setWindowTitle("Sudoku");
+		setWindowTitle(PACKAGE_NAME);
 		
 		action_revert->setEnabled(false);
 		
 	} else {
-		setWindowTitle(mainwindow_solverwindow->filename() + " - Sudoku");
+		setWindowTitle(mainwindow_solverwindow->filename() + " - " + PACKAGE_NAME);
 		
 		action_revert->setEnabled(true);
 	}
@@ -186,4 +196,14 @@ void MainWindow::doQuit()
 	if (QMessageBox::question(this, tr("Quit"), tr("Exit the application?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
 		qApp->closeAllWindows();
 	}
+}
+
+void MainWindow::doAbout()
+{
+	QMessageBox::information(this, tr("About %1").arg(PACKAGE_NAME),
+		tr("%1 version %2\n\n"
+		   "This application was written by Stijn 'Ingar' Buys and "
+		   "is available under the terms and conditions of the GNU Public License, version 3 or higher.")
+		.arg(PACKAGE_NAME)
+		.arg(PACKAGE_VERSION));
 }

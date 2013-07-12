@@ -16,7 +16,6 @@
  * The homepath should probably be a setting.
  * This should move to mainwindow
  * */
-
 const QString HOMEDIR(QDir::homePath() + "/.sudoku");
 
 SolverWindow::SolverWindow()
