@@ -22,41 +22,37 @@ public:
 
 public slots:
 	
-	void load();
-	void save();
-	void saveas();
-	void revert();
-	
-	/**
-	 * @brief try to find a solution by using the rules only
-	 * */
-	void solve();
-	
-	/**
-	 * @brief try to find a solution by guessing where required
-	 * */
-	void search();
+	void doNew();
+	void doOpen();
+	void doSave();
+	void doSaveAs();
+	void doRevert();
 	
 	/**
 	 * @brief try to solve a single cell by using the rules only
 	 * */
-	void step();
-	
-	void step_constraints();
-	void step_coverage();	
-	
+	void doStep();	
 	/**
 	 * @brief try to solve a single cell by guessing where required
 	 * */
-	void guess();
+	void doGuess();
+	/**
+	 * @brief try to find a solution by using the rules only
+	 * */
+	void doSolve();
+	/**
+	 * @brief try to find a solution by guessing where required
+	 * */
+	void doSearch();
 	
-	void clear();
-	
-	void validate();
+	void doValidate();
 	
 private:
+	void step_constraints();
+	void step_coverage();	
+
 	void saveToFile(const QString & filename);
-	void loadFromFile(const QString & filename);
+	void openFromFile(const QString & filename);
 	
 	SudokuWidget	*solverwindow_sudokuwidget;
 	Sudoku		solverwindow_revertstate;

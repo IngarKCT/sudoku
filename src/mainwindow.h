@@ -30,7 +30,7 @@ private:
 	
 	// Game menu actions
 	QAction		*action_new;
-	QAction		*action_load;
+	QAction		*action_open;
 	QAction		*action_save;
 	QAction		*action_saveas;
 	QAction		*action_revert;
@@ -47,9 +47,11 @@ private:
 private slots:
 	
 	void doNew();
+	void doOpen();
 	void doSave();
 	void doSaveAs();
-	void doLoad();
+	void doRevert();
+	void doQuit();
 	
 	void doValidate();
 
