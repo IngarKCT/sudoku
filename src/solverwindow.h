@@ -55,7 +55,6 @@ private:
 	void openFromFile(const QString & filename);
 	
 	SudokuWidget	*solverwindow_sudokuwidget;
-	Sudoku		solverwindow_revertstate;
 	QString		solverwindow_filename;
 };
 

@@ -52,8 +52,7 @@ void SolverWindow::openFromFile(const QString & filename)
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	
-	QTextStream textstream(&file);
-	
+	QTextStream textstream(&file);	
 	Sudoku sudoku;	
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
@@ -62,11 +61,9 @@ void SolverWindow::openFromFile(const QString & filename)
 			sudoku.cell(row, column).set_value(i);
 		}
 	}
-	solverwindow_sudokuwidget->set_values(sudoku);
-	solverwindow_revertstate.assign(sudoku);
-	
 	file.close();
 	
+	solverwindow_sudokuwidget->set_values(sudoku);
 	solverwindow_filename = filename;
 	
 	QApplication::restoreOverrideCursor();
@@ -86,8 +83,7 @@ void SolverWindow::saveToFile(const QString & filename)
 	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	
-	QTextStream textstream(&file);
-	
+	QTextStream textstream(&file);	
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
 	for (int row = 0; row < 9; row++) {
