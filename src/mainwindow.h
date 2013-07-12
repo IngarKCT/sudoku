@@ -22,6 +22,8 @@ private:
 	
 	void initMenus();
 	
+	void updateTitle();
+	
 	SolverWindow	*mainwindow_solverwindow;
 	QMenu		*mainwindow_gamemenu;
 	QMenu		*mainwindow_movemenu;
@@ -37,8 +39,18 @@ private:
 	// Move menu actions
 	QAction		*action_hint;
 	QAction		*action_step;
+	QAction		*action_guess;
 	QAction		*action_solve;
 	QAction		*action_search;
+	QAction		*action_validate;
+	
+private slots:
+	
+	void doSave();
+	void doSaveAs();
+	void doLoad();
+	
+	void doValidate();
 
 };
 

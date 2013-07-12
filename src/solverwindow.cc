@@ -14,6 +14,7 @@
  * FIXME
  * On windows, this results in a rather awkward directory.
  * The homepath should probably be a setting.
+ * This should move to mainwindow
  * */
 
 const QString HOMEDIR(QDir::homePath() + "/.sudoku");
@@ -21,63 +22,7 @@ const QString HOMEDIR(QDir::homePath() + "/.sudoku");
 SolverWindow::SolverWindow()
 {
 	QHBoxLayout *windowlayout = new QHBoxLayout();
-	
-	
-	// sidebar
-	QVBoxLayout *sidebarlayout = new QVBoxLayout();
-	
-	// add stretch
-	sidebarlayout->addStretch(1);
-	
-	// add load button
-	QPushButton *loadbutton = new QPushButton(tr("Load"));
-	sidebarlayout->addWidget(loadbutton);
-	connect(loadbutton, SIGNAL(clicked()), this, SLOT(load()));
-	
-	// add save button
-	QPushButton *savebutton = new QPushButton(tr("Save"));
-	sidebarlayout->addWidget(savebutton);
-	connect(savebutton, SIGNAL(clicked()), this, SLOT(saveas()));
-	
-	// add revert button
-	QPushButton *revertbutton = new QPushButton(tr("Revert"));
-	sidebarlayout->addWidget(revertbutton);
-	connect(revertbutton, SIGNAL(clicked()), this, SLOT(revert()));
 
-	// add validate button
-	QPushButton *validatebutton = new QPushButton(tr("Validate"));
-	sidebarlayout->addWidget(validatebutton);
-	connect(validatebutton, SIGNAL(clicked()), this, SLOT(validate()));
-	
-	// add a step button
-	QPushButton *stepbutton = new QPushButton(tr("Step"));
-	sidebarlayout->addWidget(stepbutton);
-	connect(stepbutton, SIGNAL(clicked()), this, SLOT(step()));
-
-	// add stretch
-	sidebarlayout->addStretch(2);
-	
-	// add a solve button
-	QPushButton *solvebutton = new QPushButton(tr("Solve"));
-	sidebarlayout->addWidget(solvebutton);
-	connect(solvebutton, SIGNAL(clicked()), this, SLOT(solve()));
-	
-	// add a search button
-	QPushButton *searchbutton = new QPushButton(tr("Search"));
-	sidebarlayout->addWidget(searchbutton);
-	connect(searchbutton, SIGNAL(clicked()), this, SLOT(search()));
-	
-	// add clear button
-	QPushButton *clearbutton = new QPushButton(tr("Clear"));
-	sidebarlayout->addWidget(clearbutton);
-	connect(clearbutton, SIGNAL(clicked()), this, SLOT(clear()));
-	
-	// add stretch
-	sidebarlayout->addStretch(1);
-	
-	// add sidebar layout
-	windowlayout->addLayout(sidebarlayout);
-		
 	// sudoku widget
 	solverwindow_sudokuwidget = new SudokuWidget();
 	windowlayout->addWidget(solverwindow_sudokuwidget, 1);
@@ -86,20 +31,17 @@ SolverWindow::SolverWindow()
 	setLayout(windowlayout);
 
 	// create home directory
+	// FIXME this should move to mainwindow
 	QDir directory;
 	if (!directory.exists(HOMEDIR)) {
 		directory.mkdir(HOMEDIR);
 	}
 }
 
-void SolverWindow::load()
+void SolverWindow::loadFromFile(const QString & filename)
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open..."), HOMEDIR, "Sudoku (*.sudoku)");
-     	if (filename.isEmpty()) {
-		return;
-	}
-	
 	QFile file(filename);
+	
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
 		QMessageBox::warning(this, tr("Open file"),
 				tr("Could not open file %1:\n%2.")
@@ -125,22 +67,14 @@ void SolverWindow::load()
 	
 	file.close();
 	
+	solverwindow_filename = filename;
+	
 	QApplication::restoreOverrideCursor();
 }
 
-void SolverWindow::revert()
-{
-	// FIXME this should actually re-load the savegame
-	solverwindow_sudokuwidget->set_values(solverwindow_revertstate);
-}
 
-void SolverWindow::saveas()
+void SolverWindow::saveToFile(const QString & filename)
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("Save as..."), HOMEDIR, "Sudoku (*.sudoku)");
-	if (filename.isEmpty()) {
-		return;
-	}
-	
 	QFile file(filename);
 	if (!file.open(QFile::WriteOnly | QFile::Text)) {
 		QMessageBox::warning(this, tr("Save file"),
@@ -149,7 +83,7 @@ void SolverWindow::saveas()
 				.arg(file.errorString()));
 		return;
 	}
-
+	
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 	
 	QTextStream textstream(&file);
@@ -176,8 +110,48 @@ void SolverWindow::saveas()
 	
 	file.close();
 	
+	solverwindow_filename = filename;
+	
 	QApplication::restoreOverrideCursor();
+}
 
+
+void SolverWindow::load()
+{
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open..."), HOMEDIR, "Sudoku (*.sudoku)");
+     	
+	if (!filename.isEmpty()) {
+		loadFromFile(filename);
+	}
+	
+	return;
+}
+
+void SolverWindow::revert()
+{
+	if (!solverwindow_filename.isEmpty()) {
+		loadFromFile(solverwindow_filename);
+	}
+}
+
+void SolverWindow::save()
+{
+	if (solverwindow_filename.isEmpty()) {
+		saveas();
+	} else {
+		saveToFile(solverwindow_filename);
+	}
+	return;
+}
+
+void SolverWindow::saveas()
+{
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save as..."), HOMEDIR, "Sudoku (*.sudoku)");
+	if (!filename.isEmpty()) {
+		solverwindow_filename = filename;
+		saveToFile(solverwindow_filename);
+	}
+	
 	return;
 }
 
@@ -195,7 +169,37 @@ void SolverWindow::step()
 	Sudoku solution(sudoku);
 	int solved = solution.solve_rules();
 	if (solved == 0) {
-		qDebug() << "no solveable cells left!";
+		QMessageBox::warning(this, tr("Step"), tr("No cells to solve found"));
+		return;
+	}
+	
+	// compare sudoku and solution values
+	int index_start = (int) random() % 81;
+	int index_current = index_start;
+	do {
+		int column = index_current % 9;
+		int row = (index_current - column) / 9;
+		if ((sudoku.cell(row,column).value() == 0) && (solution.cell(row,column).value() != 0)) {
+			sudoku.cell(row,column).set_value(solution.cell(row, column).value());
+			solverwindow_sudokuwidget->set_values(sudoku);
+			return;
+		}
+		
+		index_current = (index_current + 1) % 81;
+		
+	} while (index_current != index_start);
+	
+}
+
+void SolverWindow::guess()
+{
+	Sudoku sudoku;
+	solverwindow_sudokuwidget->get_values(sudoku);
+	
+	Sudoku solution(sudoku);
+	int solved = solution.solve_search();
+	if (solved == 0) {
+		QMessageBox::warning(this, tr("Guess"), tr("No cells to solve found"));
 		return;
 	}
 	
@@ -219,6 +223,7 @@ void SolverWindow::step()
 
 void SolverWindow::solve()
 {
+	// TODO messagebox, detect invalid and solved states
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
 	int solved = sudoku.solve_rules();
@@ -229,6 +234,7 @@ void SolverWindow::solve()
 
 void SolverWindow::search()
 {
+	// TODO messagebox, detect invalid and solved states
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
 	int iterations = sudoku.solve_search();
@@ -244,7 +250,7 @@ void SolverWindow::step_constraints()
 	solverwindow_sudokuwidget->get_values(sudoku);
 	int solved = sudoku.solve_constraints();
 	solverwindow_sudokuwidget->set_values(sudoku);
-	qDebug() << solved << " cells solved";
+	// qDebug() << solved << " cells solved";
 }
 
 void SolverWindow::step_coverage()
@@ -253,7 +259,7 @@ void SolverWindow::step_coverage()
 	solverwindow_sudokuwidget->get_values(sudoku);
 	int solved = sudoku.solve_coverage();
 	solverwindow_sudokuwidget->set_values(sudoku);
-	qDebug() << solved << " cells solved";
+	// qDebug() << solved << " cells solved";
 }
 
 void SolverWindow::validate()
@@ -261,11 +267,10 @@ void SolverWindow::validate()
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
 	if (sudoku.validate()) {
-		qDebug() << "sudoku is valid";
+		QMessageBox::information(this, tr("Validate"), tr("Sudoku is valid."));
 	} else {
-		qDebug() << "sudoku is not valid";
+		QMessageBox::warning(this, tr("Validate"), tr("Sudoku is not valid!"));
 	}
 	solverwindow_sudokuwidget->set_values(sudoku);
-	qDebug() << "sudoku validated";
 }
 

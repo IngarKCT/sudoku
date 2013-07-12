@@ -27,17 +27,17 @@ void MainWindow::initActions()
 	action_load = new QAction(tr("&Load..."), this);
 	action_load->setShortcuts(QKeySequence::Open);
 	action_load->setStatusTip(tr("Load a previously saved game"));
-	connect(action_load, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(load()));
+	connect(action_load, SIGNAL(triggered()), this, SLOT(doLoad()));
 	
 	// Game -> Save
 	action_save = new QAction(tr("&Save"), this);
 	action_load->setStatusTip(tr("Save the current game"));
-	//TODO
+	connect(action_save, SIGNAL(triggered()), this, SLOT(doSave()));
 
 	// Game -> Save As
 	action_saveas = new QAction(tr("Save &As..."), this);
 	action_load->setStatusTip(tr("Save the current game to a new file"));
-	connect(action_saveas, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(saveas()));
+	connect(action_saveas, SIGNAL(triggered()), this, SLOT(doSaveAs()));
 	
 	// Game -> Revert
 	action_revert = new QAction(tr("&Revert"), this);
@@ -60,6 +60,11 @@ void MainWindow::initActions()
 	action_step->setStatusTip(tr("Solve a single cell"));
 	connect(action_step, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(step()));
 	
+	// Move -> Step
+	action_guess = new QAction(tr("Guess"), this);
+	action_guess->setStatusTip(tr("Solve a single cell with guessing"));
+	connect(action_guess, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(guess()));
+	
 	// Move -> Solve
 	action_solve = new QAction(tr("Solve rules"), this);
 	action_solve->setStatusTip(tr("Solve sudoku rules"));
@@ -69,6 +74,11 @@ void MainWindow::initActions()
 	action_search = new QAction(tr("Find solution"), this);
 	action_search->setStatusTip(tr("Find a solution"));
 	connect(action_search, SIGNAL(triggered()), mainwindow_solverwindow, SLOT(search()));
+	
+	// Move -> Validate
+	action_validate = new QAction(tr("Validate"), this);
+	action_validate ->setStatusTip(tr("Validate the sudoku"));
+	connect(action_validate, SIGNAL(triggered()), this, SLOT(doValidate()));
 }
 
 void MainWindow::initMenus()
@@ -77,7 +87,7 @@ void MainWindow::initMenus()
 	mainwindow_gamemenu->addAction(action_new);
 	mainwindow_gamemenu->addAction(action_load);
 	mainwindow_gamemenu->addSeparator();
-	//mainwindow_gamemenu->addAction(action_save);
+	mainwindow_gamemenu->addAction(action_save);
 	mainwindow_gamemenu->addAction(action_saveas);
 	mainwindow_gamemenu->addAction(action_revert);
 	mainwindow_gamemenu->addSeparator();
@@ -86,7 +96,43 @@ void MainWindow::initMenus()
 	mainwindow_movemenu = menuBar()->addMenu(tr("&Move"));
 	//mainwindow_movemenu->addAction(action_hint);
 	mainwindow_movemenu->addAction(action_step);
+	mainwindow_movemenu->addAction(action_guess);
+	mainwindow_movemenu->addSeparator();
 	mainwindow_movemenu->addAction(action_solve);
 	mainwindow_movemenu->addAction(action_search);
+	mainwindow_movemenu->addSeparator();
+	mainwindow_movemenu->addAction(action_validate);
 }
 
+void MainWindow::updateTitle()
+{
+	if (mainwindow_solverwindow->filename().isEmpty()) {
+		setWindowTitle("Sudoku");
+	} else {
+		setWindowTitle(mainwindow_solverwindow->filename() + " - Sudoku");
+	}
+}
+
+void MainWindow::doSave()
+{
+	mainwindow_solverwindow->save();
+	updateTitle();
+}
+
+void MainWindow::doSaveAs()
+{
+	mainwindow_solverwindow->saveas();
+	updateTitle();
+}
+
+void MainWindow::doLoad()
+{
+	mainwindow_solverwindow->load();
+	updateTitle();
+}
+
+void MainWindow::doValidate()
+{
+	mainwindow_solverwindow->validate();
+}
+	

@@ -13,6 +13,42 @@ SudokuWidget::SudokuWidget()
 			sudokuwidget_value[row][column] = new QLineEdit(this);
 			sudokuwidget_value[row][column]->setFrame(false);
 			sudokuwidget_value[row][column]->setAlignment(Qt::AlignCenter);
+			
+			connect(sudokuwidget_value[row][column], SIGNAL(textEdited(const QString &)), this, SLOT(verify(const QString &)));
+		}
+	}
+}
+
+void SudokuWidget::verify(const QString & text)
+{
+	Sudoku values;
+	for (int row = 0; row < 9; row++) {
+		for (int column = 0; column < 9 ; column++) {
+			bool ok;
+			QString str(sudokuwidget_value[row][column]->text());
+			int i = str.toInt(&ok);
+			if (ok && (i > 0) && (i <= 9)) {
+				values.cell(row, column).set_value(i);
+			} else {
+				values.cell(row, column).set_value(0);
+			}
+		}
+	}
+		
+	values.validate();
+	
+	for (int row = 0; row < 9; row++) {
+		for (int column = 0; column < 9 ; column++) {
+			QPalette child_palette(palette());
+			int i = values.cell(row, column).value();
+			if ( (i > 0) && (i <= 9) ) {
+				// set background color depending on the validity of the cell value
+				if (!values.cell(row, column).valid()) {
+					// FIXME colors should be configurable
+					child_palette.setColor(QPalette::Base, QColor(255, 0, 0));
+				}
+			}
+			sudokuwidget_value[row][column]->setPalette(child_palette);
 		}
 	}
 }

@@ -45,6 +45,8 @@ protected:
 private:
 	QLineEdit	* sudokuwidget_value[9][9];
 
+private slots:
+	void verify(const QString & text);
 };
 
 #endif // __INCLUDED_SUDOKUSOLVER_SUDOKUWIDGET__
