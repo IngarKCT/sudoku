@@ -4,7 +4,7 @@ INGAR'S SUDOKU SOLVER
 	I'm not a fervent sudoku solver but I always wanted to try implementing
 	a program to solve the puzzles faster than I can. This is my first attempt.
 	
-	This program uses the Qt library for its user interface, you will need
+	This program uses the Qt 4.x library for its user interface, you will need
 	to have it installed to run the program.
 	
 BUILDING INSTRUCTIONS
@@ -25,21 +25,37 @@ BUILDING INSTRUCTIONS
 USAGE
 
 	Running the program will show the main window, which consists of a basic
-	sudoku grid (9x9) and a number of buttons.
-
-	The LOAD button allows you to load a previously loaded game.
+	sudoku grid (9x9) and a number of menu options.
 	
-	The SAVE button allows you to save the current sudoku puzzle to a file,
-	like wise, the LOAD button allwos you to load a previously saved sudoko.
-
-	The CLEAR button will clear all values.
-
-	The STEP button will solve a single cell, but only applies the sudoko
-	rules, it will not "guess".
+	GAME menu
 	
-	The SOLVE button will try to solve the puzzle without "guessing".
+		The NEW option will clear the current game
 	
-	The SEARCH button will try to solve the puzzle and 
+		The LOAD option allows you to load a previously loaded game.
+		
+		The SAVE allows you to save the current sudoku puzzle to the current file.
+		
+		The SAVE AS allows you to save the current sudoku puzzle to a new file.
+		
+		The REVERT option will reload the current file from disk.
+		
+		The QUIT option will close the program.
+	
+	MOVE menu
+	
+		The STEP option will solve a single random empty cell, 
+		using the sudoku rules only.
+		
+		The GUESS option will solve a single random empty cell,
+		and will guess (search) for a solution as required.
+		
+		The SOLVE RULES option will try to solve the game,
+		using sudoku rules only.
+		
+		The FIND SOLUTION option will try to solve the game,
+		and will guess (search) for a solution as required.
+		
+		The VALIDATE option will verify if the current puzzel is valid.
 	
 SAVE GAME FILE FORMAT
 
@@ -85,4 +101,3 @@ COPYRIGHT
 	Copyright (c) 2012-2013
 	ingar@telenet.be
 	htpt://ingar.satgnu.net
-
