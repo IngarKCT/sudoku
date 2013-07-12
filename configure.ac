@@ -1,10 +1,10 @@
 dnl
-dnl configure.in for the sudoku solver
+dnl configure.in for Ingar's Sudoku Solver
 dnl
 dnl see also http://qtnode.net/wiki/Qt_with_autotools
 dnl
 
-AC_INIT(editor,0.1)
+AC_INIT([Sudoku Solver], [0.1.0], [ingar@osirion.org], [sudoku])
 
 AC_CONFIG_HEADERS(src/config.h)
 
@@ -141,3 +141,19 @@ rm -f moc_myqt.cpp myqt.h myqt.cpp myqt.o myqt moc_myqt.o
 
 AC_CONFIG_FILES(Makefile src/Makefile)
 AC_OUTPUT
+
+AC_MSG_RESULT([
+
+$PACKAGE_STRING
+
+Configuration summary:
+
+platform .................. $host
+installation prefix ....... $prefix
+
+includes .................. $INCLUDES
+libraries ................. $LIBS
+preprocessor flags ........ $CXXFLAGS
+compiler flags ............ $CXXFLAGS
+
+])

@@ -1,11 +1,11 @@
 
-INGAR'S SUDOKU SOLVER
+INGAR'S SUDOKU SOLVER - README
 	
 	I'm not a fervent sudoku solver but I always wanted to try implementing
 	a program to solve the puzzles faster than I can. This is my first attempt.
 	
 	This program uses the Qt 4.x library for its user interface, you will need
-	to have it installed to run the program.
+	to have it installed to build or run the program.
 	
 BUILDING INSTRUCTIONS
 
@@ -25,7 +25,7 @@ BUILDING INSTRUCTIONS
 USAGE
 
 	Running the program will show the main window, which consists of a basic
-	sudoku grid (9x9) and a number of menu options.
+	9x9 sudoku grid and a number of menu options.
 	
 	GAME menu
 	
@@ -43,10 +43,10 @@ USAGE
 	
 	MOVE menu
 	
-		The STEP option will solve a single random empty cell, 
+		The STEP option will try to solve a single random unsolved cell, 
 		using the sudoku rules only.
 		
-		The GUESS option will solve a single random empty cell,
+		The GUESS option will try to solve a single random unsolved cell,
 		and will guess (search) for a solution as required.
 		
 		The SOLVE RULES option will try to solve the game,
@@ -60,8 +60,8 @@ USAGE
 SAVE GAME FILE FORMAT
 
 	The file format is extremely simple: the files can be opened and edited
-	with a text editor. Note that empty (unsolved) positions are saved as well.
-	Value 0 indicates an empty cell.
+	with a text editor. Note that unsolved positions are saved too
+	and are indicated by zeroes.
 	
 	Example:
 	
@@ -79,7 +79,7 @@ SAVE GAME FILE FORMAT
 
 	While the file format is optimized for readability, the program will
 	actually ignore extra whitespace while loading a file. This allows you to
-	load games from a simple file with numbers.
+	load games from a simple file with a sequence if 81 numbers.
 	
 ALGORITHM
 
@@ -89,15 +89,15 @@ ALGORITHM
 	and the sudoko inclusion rules, where every number has to appear exactly once
 	in every row, column and subgrid,
 	
-	The search solver will apply constraints until there no more cells left with just one possibility.
-	From there, it will pick a random empty cell and fill it with one of the remaining possibilities.
+	The search solver will apply constraints until there are no cells left with a unique solution.
+	From there, it will pick a random unsolved cell and fill it with one of the remaining possibilities.
 	From there it recurses into the next iteration.
 	
 COPYRIGHT
 
 	This sudoku solver was written by Stijn "Ingar" Buys and is available under
-	the terms and conditions of the GNU Public License (GPL).
+	the terms and conditions of the GNU Public License, version 3 or higher.
 	
 	Copyright (c) 2012-2013
-	ingar@telenet.be
-	htpt://ingar.satgnu.net
+	ingar@osirion.org
+	http://ingar.satgnu.net

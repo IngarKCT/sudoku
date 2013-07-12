@@ -1,12 +1,13 @@
-- Add Help->About
-- Add confirm dialgs on Quit and New
-- Mark invalid input
 
-- [VERIFY] Have the options in the Move menu call validate() before solving.
-- [VERIFY] Incorporate validate() into the menu
+INGAR'S SUDOKU SOLVER - TODO
 
-- [SOLVED] Remove sidebar buttons
-
-- [SOLVED] Move->Step solves rules only. Have it search for a solution
-  and pick a solved cell.
-* Added Move->Guess
+	- Add Game->Settings (colors, homepath)
+	
+	- [SOLVED] Add confirm dialgs on Quit and New
+	- [SOLVED] Remove sidebar buttons
+	- [SOLVED] Move->Step solves rules only. Have it search for a solution and pick a solved cell. 
+	           Solved by adding the Move->Guess option.
+	- [SOLVED] Mark invalid input
+	- [SOLVED] Add Help->About
+	- [SOLVED] Incorporate validate() into the menu
+	- [SOLVED] Incorporate validate() into the menuHave the options in the Move menu call validate() before solving
