@@ -1,7 +1,7 @@
-bin_PROGRAMS = sudoku
+bin_PROGRAMS = sudokusolver
 
 # Project C++ source files
-sudoku_SOURCES = \
+sudokusolver_SOURCES = \
 	cell.cc \
 	main.cc \
 	mainwindow.cc \
@@ -10,7 +10,7 @@ sudoku_SOURCES = \
 	sudokuwidget.cc
 
 # moc generated C++ source files
-nodist_sudoku_SOURCES = \
+nodist_sudokusolver_SOURCES = \
 	moc_mainwindow.cc \
 	moc_solverwindow.cc \
 	moc_sudokuwidget.cc

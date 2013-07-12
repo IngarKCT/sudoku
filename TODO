@@ -1,8 +1,10 @@
 
-INGAR'S SUDOKU SOLVER - TODO
+SUDOKU SOLVER - TODO
 
 	- Add Game->Settings (colors, homepath)
-	- Fixed homedir business on WIN32 (e.g. use Aplication data)
+	- Add status bar
+	- Fix homedir business on WIN32 (e.g. use Aplication data)
+	- Add windows exe icon
 	
 	- [SOLVED] Add confirm dialgs on Quit and New
 	- [SOLVED] Remove sidebar buttons
@@ -11,4 +13,5 @@ INGAR'S SUDOKU SOLVER - TODO
 	- [SOLVED] Mark invalid input
 	- [SOLVED] Add Help->About
 	- [SOLVED] Incorporate validate() into the menu
-	- [SOLVED] Incorporate validate() into the menuHave the options in the Move menu call validate() before solving
+	- [SOLVED] Incorporate validate() into the menu
+	- [SOLVED] Have the options in the Move menu call validate() before solving
