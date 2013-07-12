@@ -4,7 +4,7 @@ dnl
 dnl see also http://qtnode.net/wiki/Qt_with_autotools
 dnl
 
-AC_INIT([Sudoku Solver], [0.1.0], [ingar@osirion.org], [sudoku])
+AC_INIT([Sudoku Solver], [0.1.0], [ingar@osirion.org], [sudokusolver])
 
 AC_CONFIG_HEADERS(src/config.h)
 
