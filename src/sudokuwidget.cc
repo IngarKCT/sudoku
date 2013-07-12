@@ -13,8 +13,6 @@
 const QColor color_invalid_value(255, 0, 0);
 const QColor color_input_error(195, 195, 195);
 
-
-
 SudokuWidget::SudokuWidget()
 {
 	for (int row = 0; row < 9; row++) {
