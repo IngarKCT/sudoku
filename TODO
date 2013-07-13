@@ -1,9 +1,10 @@
 
 SUDOKU SOLVER - TODO
 
-	- Add Game->Settings (colors, homepath)
-	- Disable the built-in 'overwrite' warning in the Save As dialog, use the same warning for SAve and Save As.
+	- Add Game->Settings (colors, homepath)	
 	
+	- [SOLVED] Disable the built-in 'overwrite' warning in the Save As dialog, use the same warning for Save and Save As.
+	- [SOLVED] Have the Move->Validate option tell if the sudoku can be solved through constrains, full search, or not at all	
 	- [SOLVED] Fix homedir business on WIN32 (uses Application data)
 	- [SOLVED] Add windows exe icon
 	- [SOLVED] Add status bar

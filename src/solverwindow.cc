@@ -125,9 +125,20 @@ void SolverWindow::doRevert()
 {
 	if (!solverwindow_filename.isEmpty()) {
 		QFileInfo fileinfo(solverwindow_filename);
-		if (QMessageBox::warning(this, tr("Revert?"), tr("Revert the state of the game to the previously saved file \"%1\"?").arg(fileinfo.fileName()), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
+		if (QMessageBox::warning(this, tr("Revert?"), tr("Revert the game to the previously saved file \"%1\"?").arg(fileinfo.fileName()), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
 			openFromFile(solverwindow_filename);
 		}
+	}
+}
+
+bool SolverWindow::confirmOverwrite(const QString & filename)
+{
+	QFile file (solverwindow_filename);
+	if (file.exists()) {
+		QFileInfo fileinfo(file);
+		return (QMessageBox::warning(this, tr("Overwrite file?"), tr("The file \"%1\" already exists.\nDo you wish to overwrite it?").arg(fileinfo.fileName()), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes);
+	} else {
+		return true;
 	}
 }
 
@@ -136,28 +147,22 @@ void SolverWindow::doSave()
 	if (solverwindow_filename.isEmpty()) {
 		// no file name is set, use the Save As dialog
 		doSaveAs();
-	} else {
-		// confirm overwriting an existing file
-		QFile file (solverwindow_filename);
-		if (file.exists()) {
-			QFileInfo fileinfo(file);
-			if (QMessageBox::warning(this, tr("Overwrite file?"), tr("The file \"%1\" already exists. Do you wish to overwrite it?").arg(fileinfo.fileName()), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes) {
-				return;
-			}
-		} 
+	} else if (confirmOverwrite(solverwindow_filename)) {
 		saveToFile(solverwindow_filename);
-		
 	}
 }
 
 void SolverWindow::doSaveAs()
 {
-	// QFileDialog::getSaveFileName() warns about existing files
-	QString filename = QFileDialog::getSaveFileName(this, tr("Save as..."), globalSettings().homePath(), "Sudoku (*.sudoku)");
-	
-	if (!filename.isEmpty()) {
-		saveToFile(filename);
-	}
+	QString filename;
+	do {
+		filename = QFileDialog::getSaveFileName(this, tr("Save as..."), globalSettings().homePath(), "Sudoku (*.sudoku)", 0, QFileDialog::DontConfirmOverwrite);
+		if (filename.isEmpty()) {
+			return;
+		}
+	} while (!confirmOverwrite(filename));
+		
+	saveToFile(filename);
 }
 
 void SolverWindow::doNew()
@@ -175,6 +180,11 @@ void SolverWindow::doStep()
 {
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
+	
+	if (!sudoku.validate()) {
+		QMessageBox::warning(this, tr("Step"), tr("This sudoku is not valid!"));
+		return;
+	}
 	
 	Sudoku solution(sudoku);
 	int solved = solution.solve_rules();
@@ -205,6 +215,11 @@ void SolverWindow::doGuess()
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
 	
+	if (!sudoku.validate()) {
+		QMessageBox::warning(this, tr("Guess"), tr("This sudoku is not valid!"));
+		return;
+	}
+	
 	Sudoku solution(sudoku);
 	int solved = solution.solve_search();
 	if (solved == 0) {
@@ -231,31 +246,37 @@ void SolverWindow::doGuess()
 
 void SolverWindow::doSolve()
 {
-	// TODO detect invalid and solved states
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
-	int solved = sudoku.solve_rules();
-	sudoku.validate();
+	bool is_valid = sudoku.validate();
+	sudoku.solve_rules();
+	bool is_solved = sudoku.solved();
 	solverwindow_sudokuwidget->set_values(sudoku);
 	
-	if (solved == 0) {
-		QMessageBox::warning(this, tr("Solve rules"), tr("No more cells to solve!"));
-		return;
+	if (!is_valid) {
+		QMessageBox::warning(this, tr("Find solution"), tr("This sudoku is not valid!"));
+	} else if (is_solved) {
+		QMessageBox::information(this, tr("Find solution"), tr("This sudoku has been solved."));
+	} else {
+		QMessageBox::warning(this, tr("Find solution"), tr("This sudoku can not be solved by applying the rules!"));
 	}
 }
 
 void SolverWindow::doSearch()
 {
-	// TODO detect invalid and solved states
 	Sudoku sudoku;
 	solverwindow_sudokuwidget->get_values(sudoku);
-	int iterations = sudoku.solve_search();
-	sudoku.validate();
-	solverwindow_sudokuwidget->set_values(sudoku);
+	bool is_valid = sudoku.validate();
+	sudoku.solve_search();
+	bool is_solved = sudoku.solved();
+	solverwindow_sudokuwidget->set_values(sudoku);	
 	
-	if (iterations == 0) {
-		QMessageBox::warning(this, tr("Find solution"), tr("No more cells to solve!"));
-		return;
+	if (!is_valid) {
+		QMessageBox::warning(this, tr("Find solution"), tr("This sudoku is not valid!"));
+	} else if (is_solved) {
+		QMessageBox::information(this, tr("Find solution"), tr("This sudoku has been solved."));
+	} else {
+		QMessageBox::warning(this, tr("Find solution"), tr("This sudoku can not be solved!"));
 	}
 }
 
@@ -265,13 +286,35 @@ void SolverWindow::doValidate()
 	solverwindow_sudokuwidget->get_values(sudoku);
 	
 	bool is_valid = sudoku.validate();
+	
 	solverwindow_sudokuwidget->set_values(sudoku);
 	
-	if (is_valid) {
-		QMessageBox::information(this, tr("Validate"), tr("Sudoku is valid."));
-	} else {
-		QMessageBox::warning(this, tr("Validate"), tr("Sudoku is not valid!"));
-	}	
+	if (!is_valid) {
+		QMessageBox::warning(this, tr("Validate"), tr("This sudoku is not valid!"));
+		return;
+	}
+	
+	bool is_solved = sudoku.solved();
+	if (is_solved) {
+		QMessageBox::information(this, tr("Validate"), tr("This sudoku has been solved."));
+		return;
+	}
+	
+	sudoku.solve_rules();
+	is_solved = sudoku.solved();
+	if (is_solved) {
+		QMessageBox::information(this, tr("Validate"), tr("This sudoku can be solved by applying the rules."));
+		return;
+	}
+	
+	sudoku.solve_search();
+	is_solved = sudoku.solved();
+	if (is_solved) {
+		QMessageBox::information(this, tr("Validate"), tr("This sudoku can be solved but needs guessing."));
+		return;
+	}
+	
+	QMessageBox::warning(this, tr("Validate"), tr("This sudoku is valid but can not be solved!"));
 }
 
 void SolverWindow::step_constraints()

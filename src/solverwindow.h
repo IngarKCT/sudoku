@@ -57,6 +57,8 @@ private:
 	void saveToFile(const QString & filename);
 	void openFromFile(const QString & filename);
 	
+	bool confirmOverwrite(const QString & filename);
+	
 	SudokuWidget	*solverwindow_sudokuwidget;
 	QString		solverwindow_filename;
 };

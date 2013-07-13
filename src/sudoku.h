@@ -26,10 +26,19 @@ public:
 	 * */
 	void reset_cell(int pos_row, int pos_column);
 	
+	/**
+	 * @brief resolve sudoku constraint rules for a single cell
+	 * */
 	int solve_constraints(int pos_row, int pos_column);
 	
+	/**
+	 * @brief resolve sudoku constraint rules
+	 * */
 	int solve_constraints();
 	
+	/**
+	 * @brief resolve sudoku coverage rules
+	 * */
 	int solve_coverage();
 	
 	/**
@@ -38,7 +47,7 @@ public:
 	int solve_rules();
 	
 	/**
-	 * @brief solve the sudoku, using exhaustive search
+	 * @brief solve the sudoku, using full search
 	 * */
 	int solve_search();
 	
