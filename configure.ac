@@ -6,11 +6,12 @@ dnl
 
 AC_INIT([Sudoku Solver], [0.1.0], [ingar@osirion.org], [sudokusolver])
 
+AC_LANG_CPLUSPLUS
+AC_PROG_CC
+AC_PROG_CXX
 AC_CONFIG_HEADERS(src/config.h)
 
 AM_INIT_AUTOMAKE
-AC_PROG_CC
-AC_PROG_CXX
 
 dnl
 dnl Qt installation prefix
@@ -18,7 +19,7 @@ dnl
 AC_MSG_CHECKING(Qt installation prefix)
 QTDIR=xxx
 AC_ARG_WITH([qt-prefix],
-             AC_HELP_STRING([--with-qt-prefix=], [to specify the path to the Qt-4.8.0 installation prefix.]),
+             AC_HELP_STRING([--with-qt-prefix=], [to specify the path to the Qt 4.8 installation prefix.]),
              [QTPATHS="$withval"],
              [QTPATHS="/usr /usr/qt4 /opt/qt4"])
 
@@ -28,7 +29,7 @@ for x in $QTPATHS; do
     fi
 done
 if test $QTDIR = xxx ; then
-   AC_MSG_ERROR(Could not locate QT 4.1)
+   AC_MSG_ERROR(Could not locate Qt 4.8)
 fi
 AC_MSG_RESULT($QTDIR)
 
@@ -38,7 +39,7 @@ dnl
 AC_MSG_CHECKING(Qt includes directory)
 
 AC_ARG_WITH([qt-includes],
-             AC_HELP_STRING([--with-qt-includes=], [to specify the path to directory containing the the Qt-4.8.0 includes.]),
+             AC_HELP_STRING([--with-qt-includes=], [to specify the path to directory containing the Qt 4.8 includes.]),
              [QTINCLUDEDIR="$withval"],
              [QTINCLUDEDIR="$QTDIR/include"])
 AC_MSG_RESULT($QTINCLUDEDIR)
@@ -48,27 +49,32 @@ dnl libraries directory
 dnl             
 AC_MSG_CHECKING(Qt libraries directory)
 AC_ARG_WITH([qt-libraries],
-             AC_HELP_STRING([--with-qt-libraries=], [to specify the path to directory containing the the Qt-4.8.0 libraries.]),
+             AC_HELP_STRING([--with-qt-libraries=], [to specify the path to directory containing the Qt 4.8 libraries.]),
              [QTLIBDIR="$withval"],
              [QTLIBDIR="$QTDIR/lib"])
 AC_MSG_RESULT($QTLIBDIR)
 
-host=`uname -a` # AC_CANONICAL_HOST is broken at the time of this writing.
-case $host in
-  MINGW32*)
-    AC_MSG_NOTICE(win32)
-    QTLIBS="-L$QTLIBDIR -lgdi32 -luser32 -lmingw32 -lqtmain -lQtGui4 -lQtCore4 -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-s -Wl,-subsystem,windows"
-    QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/QtGui -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
-    QTBIN="$QTDIR/bin"
-    ;;
-  *)
-    AC_MSG_NOTICE(generic UNIX)
-    AC_PATH_XTRA
-    QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtGui -I$QTINCLUDEDIR/QtCore $X_CFLAGS -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED"
-    QTLIBS="-Wl,-rpath,QTLIBDIR -L$QTLIBDIR -lQtGui -lQtCore -lpthread"
-    QTBIN="$QTDIR/bin"
-    ;;
+AC_MSG_CHECKING([host type])
+host=`uname -a`
+case "$host" in
+	MINGW32*)
+		AC_MSG_RESULT(win32)
+		QTLIBS="-L$QTLIBDIR -lgdi32 -luser32 -lmingw32 -lqtmain -lQtGui4 -lQtCore4 -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-s -Wl,-subsystem,windows"
+		QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/QtGui -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
+		QTBIN="$QTDIR/bin"
+		EXEICON="icon.o"
+		;;
+	*)
+		AC_MSG_RESULT(generic unix)
+		AC_PATH_XTRA
+		QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtGui -I$QTINCLUDEDIR/QtCore $X_CFLAGS -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED"
+		QTLIBS="-Wl,-rpath,QTLIBDIR -L$QTLIBDIR -lQtGui -lQtCore -lpthread"
+		QTBIN="$QTDIR/bin"
+		EXEICON=""
+		;;
 esac
+
+AC_SUBST(EXEICON)
 
 LIBS="$LIBS $QTLIBS"
 INCLUDES="$INCLUDES $QTINC"
