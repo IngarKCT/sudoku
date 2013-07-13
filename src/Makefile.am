@@ -14,6 +14,7 @@ sudokusolver_SOURCES = \
 	cell.cc \
 	main.cc \
 	mainwindow.cc \
+	settings.cc \
 	solverwindow.cc \
 	sudoku.cc \
 	sudokuwidget.cc

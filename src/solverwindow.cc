@@ -1,4 +1,5 @@
 
+#include "settings.h"
 #include "solverwindow.h"
 #include "sudokuwidget.h"
 #include "sudoku.h"
@@ -11,14 +12,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-/*
- * FIXME
- * On windows, this results in a rather awkward directory.
- * The homepath should probably be a setting.
- * This should move to mainwindow
- * */
-const QString HOMEDIR(QDir::homePath() + "/.sudoku");
-
 SolverWindow::SolverWindow()
 {
 	QHBoxLayout *windowlayout = new QHBoxLayout();
@@ -29,13 +22,6 @@ SolverWindow::SolverWindow()
 	
 	// set window layout
 	setLayout(windowlayout);
-
-	// create home directory
-	// FIXME this should move to mainwindow
-	QDir directory;
-	if (!directory.exists(HOMEDIR)) {
-		directory.mkdir(HOMEDIR);
-	}
 }
 
 void SolverWindow::openFromFile(const QString & filename)
@@ -128,7 +114,7 @@ void SolverWindow::saveToFile(const QString & filename)
 
 void SolverWindow::doOpen()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Open"), HOMEDIR, "Sudoku (*.sudoku)");
+	QString filename = QFileDialog::getOpenFileName(this, tr("Open"), globalSettings().homePath(), "Sudoku (*.sudoku)");
      	
 	if (!filename.isEmpty()) {
 		openFromFile(filename);
@@ -167,7 +153,7 @@ void SolverWindow::doSave()
 void SolverWindow::doSaveAs()
 {
 	// QFileDialog::getSaveFileName() warns about existing files
-	QString filename = QFileDialog::getSaveFileName(this, tr("Save as..."), HOMEDIR, "Sudoku (*.sudoku)");
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save as..."), globalSettings().homePath(), "Sudoku (*.sudoku)");
 	
 	if (!filename.isEmpty()) {
 		saveToFile(filename);

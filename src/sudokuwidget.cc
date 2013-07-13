@@ -1,17 +1,10 @@
 
 #include "sudokuwidget.h"
+#include "settings.h"
 
 #include <QLineEdit>
 #include <QGridLayout>
 #include <QString>
-
-/*
- * TODO
- * This should be moved into a global configuration sectoion
- * with a settings dialog
- * */
-const QColor color_invalid_value(255, 0, 0);
-const QColor color_input_error(195, 195, 195);
 
 SudokuWidget::SudokuWidget()
 {
@@ -41,7 +34,7 @@ void SudokuWidget::verify(const QString & text)
 				values.cell(row, column).set_value(0);
 				QPalette child_palette(palette());
 				if (!sudokuwidget_value[row][column]->text().isEmpty()) {
-					child_palette.setColor(QPalette::Base, color_input_error);
+					child_palette.setColor(QPalette::Base, globalSettings().colorInputError());
 				}
 				sudokuwidget_value[row][column]->setPalette(child_palette);
 			}
@@ -57,7 +50,7 @@ void SudokuWidget::verify(const QString & text)
 			if ( (i > 0) && (i <= 9) ) {
 				// set background color depending on the validity of the cell value
 				if (!values.cell(row, column).valid()) {
-					child_palette.setColor(QPalette::Base, color_invalid_value);
+					child_palette.setColor(QPalette::Base, globalSettings().colorInvalidValue());
 				}
 				sudokuwidget_value[row][column]->setPalette(child_palette);
 			}
@@ -82,7 +75,7 @@ void SudokuWidget::set_values(const Sudoku & values)
 				
 				// set background color depending on the validity of the cell value
 				if (!values.cell(row, column).valid()) {
-					child_palette.setColor(QPalette::Base, color_invalid_value);
+					child_palette.setColor(QPalette::Base, globalSettings().colorInvalidValue());
 				}
 			} else {
 				sudokuwidget_value[row][column]->clear();
