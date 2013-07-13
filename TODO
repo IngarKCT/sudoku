@@ -2,9 +2,10 @@
 SUDOKU SOLVER - TODO
 
 	- Add Game->Settings (colors, homepath)
-	- Fix homedir business on WIN32 (e.g. use Aplication data)
-	- Add windows exe icon
-
+	- Disable the built-in 'overwrite' warning in the Save As dialog, use the same warning for SAve and Save As.
+	
+	- [SOLVED] Fix homedir business on WIN32 (uses Application data)
+	- [SOLVED] Add windows exe icon
 	- [SOLVED] Add status bar
 	- [SOLVED] Add confirm dialgs on Quit and New
 	- [SOLVED] Remove sidebar buttons
