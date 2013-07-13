@@ -3,6 +3,8 @@
 #include "sudokuwidget.h"
 #include "sudoku.h"
 
+#include "config.h"
+
 #include <QtGui>
 #include <QDir>
 #include <QHBoxLayout>
@@ -41,10 +43,14 @@ void SolverWindow::openFromFile(const QString & filename)
 	QFile file(filename);
 	
 	if (!file.open(QFile::ReadOnly | QFile::Text)) {
-		QMessageBox::warning(this, tr("Open"),
+		QMessageBox::warning(this, tr("Error opening file"),
 				tr("Could not open file \"%1\":\n%2.")
 				.arg(filename)
 				.arg(file.errorString()));
+		
+		QFileInfo fileinfo(filename);
+		emit statusChanged(tr("Could not open file \"%1\"").arg(fileinfo.fileName()));
+
 		return;
 	}
 
@@ -64,6 +70,9 @@ void SolverWindow::openFromFile(const QString & filename)
 	solverwindow_sudokuwidget->set_values(sudoku);
 	solverwindow_filename = filename;
 	
+	QFileInfo fileinfo(filename);
+	emit statusChanged(tr("Opened file \"%1\"").arg(fileinfo.fileName()));
+	
 	QApplication::restoreOverrideCursor();
 }
 
@@ -72,10 +81,14 @@ void SolverWindow::saveToFile(const QString & filename)
 {
 	QFile file(filename);
 	if (!file.open(QFile::WriteOnly | QFile::Text)) {
-		QMessageBox::warning(this, tr("Save"),
-				tr("Could not write to file \"%1\":\n%2.")
+		QMessageBox::warning(this, tr("Error saving file"),
+				tr("Could not save file \"%1\":\n%2.")
 				.arg(filename)
 				.arg(file.errorString()));
+		
+		QFileInfo fileinfo(filename);
+		emit statusChanged(tr("Could not save file \"%1\"").arg(fileinfo.fileName()));
+		
 		return;
 	}
 	
@@ -105,6 +118,9 @@ void SolverWindow::saveToFile(const QString & filename)
 	file.close();
 	
 	solverwindow_filename = filename;
+	
+	QFileInfo fileinfo(filename);
+	emit statusChanged(tr("Saved file \"%1\"").arg(fileinfo.fileName()));
 	
 	QApplication::restoreOverrideCursor();
 }
@@ -164,6 +180,8 @@ void SolverWindow::doNew()
 		Sudoku sudoku;
 		solverwindow_sudokuwidget->set_values(sudoku);
 		solverwindow_filename.clear();
+		
+		emit statusChanged(PACKAGE_STRING);
 	}
 }
 

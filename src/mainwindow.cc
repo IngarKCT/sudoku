@@ -40,7 +40,11 @@ MainWindow::MainWindow()
 	
 	initMenus();
 	
+	initStatus();
+	
 	updateTitle();
+	
+	connect(mainwindow_solverwindow, SIGNAL(statusChanged(const QString &)), this, SLOT(updateStatus(const QString &)));
 }
 
 
@@ -142,6 +146,13 @@ void MainWindow::initMenus()
 	mainwindow_helpmenu->addAction(action_about);
 }
 
+
+void MainWindow::initStatus()
+{
+	setStatusBar(new QStatusBar(this));	
+	statusBar()->showMessage(PACKAGE_STRING);
+}
+
 void MainWindow::updateTitle()
 {
 	if (mainwindow_solverwindow->filename().isEmpty()) {
@@ -150,10 +161,16 @@ void MainWindow::updateTitle()
 		action_revert->setEnabled(false);
 		
 	} else {
-		setWindowTitle(mainwindow_solverwindow->filename() + " - " + PACKAGE_NAME);
+		QFileInfo fileinfo(mainwindow_solverwindow->filename());
+		setWindowTitle(fileinfo.baseName() + " - " + PACKAGE_NAME);
 		
 		action_revert->setEnabled(true);
 	}
+}
+
+void MainWindow::updateStatus(const QString & text)
+{
+	statusBar()->showMessage(text);
 }
 
 void MainWindow::doNew()

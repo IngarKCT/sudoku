@@ -2,10 +2,10 @@
 SUDOKU SOLVER - TODO
 
 	- Add Game->Settings (colors, homepath)
-	- Add status bar
 	- Fix homedir business on WIN32 (e.g. use Aplication data)
 	- Add windows exe icon
-	
+
+	- [SOLVED] Add status bar
 	- [SOLVED] Add confirm dialgs on Quit and New
 	- [SOLVED] Remove sidebar buttons
 	- [SOLVED] Move->Step solves rules only. Have it search for a solution and pick a solved cell. 

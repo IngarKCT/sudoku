@@ -17,13 +17,26 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow();
 
+private slots:
+	void updateTitle();
+	void updateStatus(const QString & text);
+	
+	void doNew();
+	void doOpen();
+	void doSave();
+	void doSaveAs();
+	void doRevert();
+	void doQuit();
+	
+	void doValidate();
+	
+	void doAbout();
+
 private:
 	void initActions();
-	
 	void initMenus();
-	
-	void updateTitle();
-	
+	void initStatus();
+		
 	SolverWindow	*mainwindow_solverwindow;
 	QMenu		*mainwindow_gamemenu;
 	QMenu		*mainwindow_movemenu;
@@ -47,20 +60,6 @@ private:
 	
 	// Help menu actions
 	QAction		*action_about;
-	
-private slots:
-	
-	void doNew();
-	void doOpen();
-	void doSave();
-	void doSaveAs();
-	void doRevert();
-	void doQuit();
-	
-	void doValidate();
-	
-	void doAbout();
-
 };
 
 #endif // __INCLUDED_SUDOKUSOLVER_MAINWINDOW__

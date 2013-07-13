@@ -47,6 +47,9 @@ public slots:
 	
 	void doValidate();
 	
+signals:
+	void statusChanged(const QString &text);
+	
 private:
 	void step_constraints();
 	void step_coverage();	
