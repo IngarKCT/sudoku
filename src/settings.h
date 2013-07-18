@@ -22,10 +22,16 @@ public:
 		return m_colorInputError;
 	}
 	
+	inline const QColor & colorSolved() const
+	{
+		return m_colorSolved;
+	}
+	
 private:	
 	QString 	m_homePath;
 	QColor 		m_colorInvalidValue;
 	QColor 		m_colorInputError;
+	QColor		m_colorSolved;
 };
 
 const Settings & globalSettings();

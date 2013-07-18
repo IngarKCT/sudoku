@@ -1,8 +1,11 @@
 
 SUDOKU SOLVER - TODO
 
+	- Add generation choices to Game->New (Empty, easy, medium, hard)
 	- Add Game->Settings (colors, homepath)	
-	
+	- Add Undo/Redo
+
+	- [SOLVED] Save As overwrite warning still shows the original filename	
 	- [SOLVED] Disable the built-in 'overwrite' warning in the Save As dialog, use the same warning for Save and Save As.
 	- [SOLVED] Have the Move->Validate option tell if the sudoku can be solved through constrains, full search, or not at all	
 	- [SOLVED] Fix homedir business on WIN32 (uses Application data)

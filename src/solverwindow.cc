@@ -133,7 +133,7 @@ void SolverWindow::doRevert()
 
 bool SolverWindow::confirmOverwrite(const QString & filename)
 {
-	QFile file (solverwindow_filename);
+	QFile file (filename);
 	if (file.exists()) {
 		QFileInfo fileinfo(file);
 		return (QMessageBox::warning(this, tr("Overwrite file?"), tr("The file \"%1\" already exists.\nDo you wish to overwrite it?").arg(fileinfo.fileName()), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes);

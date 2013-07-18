@@ -52,7 +52,7 @@ signals:
 	
 private:
 	void step_constraints();
-	void step_coverage();	
+	void step_coverage();
 
 	void saveToFile(const QString & filename);
 	void openFromFile(const QString & filename);

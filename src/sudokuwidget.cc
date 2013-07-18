@@ -20,7 +20,7 @@ SudokuWidget::SudokuWidget()
 	}
 }
 
-void SudokuWidget::verify(const QString & text)
+void SudokuWidget::verify()
 {
 	Sudoku values;
 	for (int row = 0; row < 9; row++) {
@@ -41,7 +41,7 @@ void SudokuWidget::verify(const QString & text)
 		}
 	}
 		
-	values.validate();
+	bool solved = values.solved();
 	
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
@@ -49,13 +49,19 @@ void SudokuWidget::verify(const QString & text)
 			int i = values.cell(row, column).value();
 			if ( (i > 0) && (i <= 9) ) {
 				// set background color depending on the validity of the cell value
-				if (!values.cell(row, column).valid()) {
+				if (solved) {
+					child_palette.setColor(QPalette::Base, globalSettings().colorSolved());
+				} else if (!values.cell(row, column).valid()) {
 					child_palette.setColor(QPalette::Base, globalSettings().colorInvalidValue());
 				}
 				sudokuwidget_value[row][column]->setPalette(child_palette);
 			}
 		}
 	}
+}
+
+void SudokuWidget::verify(const QString & text) {
+	verify();
 }
 
 QSize SudokuWidget::sizeHint () const
@@ -83,6 +89,8 @@ void SudokuWidget::set_values(const Sudoku & values)
 			sudokuwidget_value[row][column]->setPalette(child_palette);
 		}
 	}
+	
+	verify();
 }
 
 void SudokuWidget::get_values(Sudoku & values)
@@ -103,22 +111,22 @@ void SudokuWidget::get_values(Sudoku & values)
 
 void SudokuWidget::resizeEvent(QResizeEvent *event)
 {
+	// cell size
 	int sgx = width() / 9;
-	int sgy = height() / 9;
-	
-	// offset
+	int sgy = height() / 9;	
 	if (sgx > sgy) {
 		sgx = sgy;
 	} else {
 		sgy = sgx;
 	}
+	
+	// offset, used to center the grid inside the widget
 	int offset_x = (width() - 9 * sgx) / 2;
 	int offset_y = (height() - 9 * sgy) / 2;
 	
 	QFont font("default", 16);
 	font.setPixelSize(sgx / 2);
-	
-	
+		
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
 			sudokuwidget_value[row][column]->setFont(font);
