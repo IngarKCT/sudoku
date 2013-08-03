@@ -47,6 +47,10 @@ public slots:
 	
 	void doValidate();
 	
+	void doShowHintUnique();
+	
+	const bool showHintUnique() const;
+	
 signals:
 	void statusChanged(const QString &text);
 	

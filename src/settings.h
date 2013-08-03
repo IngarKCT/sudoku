@@ -27,11 +27,17 @@ public:
 		return m_colorSolved;
 	}
 	
+	inline const QColor & colorHintUnique() const
+	{
+		return m_colorHintUnique;
+	}
+	
 private:	
 	QString 	m_homePath;
 	QColor 		m_colorInvalidValue;
 	QColor 		m_colorInputError;
 	QColor		m_colorSolved;
+	QColor		m_colorHintUnique;
 };
 
 const Settings & globalSettings();

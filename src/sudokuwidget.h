@@ -30,7 +30,15 @@ public:
          * @brief return the default size hint for this widget
          * */
 	virtual QSize sizeHint() const;
-
+	
+	inline const bool showHintUnique() const
+	{
+		return m_showHintUnique;
+	}
+	
+	void setShowHintUnique(const bool hintunique = true);
+	
+	
 protected:	
         /**
          * @brief handle paint events
@@ -44,6 +52,7 @@ protected:
 	
 private:
 	QLineEdit	* sudokuwidget_value[9][9];
+	bool		m_showHintUnique;
 
 private slots:
 	void verify();

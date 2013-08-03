@@ -8,6 +8,8 @@
 
 SudokuWidget::SudokuWidget()
 {
+	m_showHintUnique = true;
+	
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
 			
@@ -20,11 +22,21 @@ SudokuWidget::SudokuWidget()
 	}
 }
 
+void SudokuWidget::setShowHintUnique(const bool hintunique)
+{
+	if (hintunique != m_showHintUnique) {
+		m_showHintUnique = hintunique;
+		verify();
+	}
+}
+
 void SudokuWidget::verify()
 {
 	Sudoku values;
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
+			QPalette child_palette(palette());
+			
 			bool ok;
 			QString str(sudokuwidget_value[row][column]->text());
 			int i = str.toInt(&ok);
@@ -36,8 +48,9 @@ void SudokuWidget::verify()
 				if (!sudokuwidget_value[row][column]->text().isEmpty()) {
 					child_palette.setColor(QPalette::Base, globalSettings().colorInputError());
 				}
-				sudokuwidget_value[row][column]->setPalette(child_palette);
 			}
+			
+			sudokuwidget_value[row][column]->setPalette(child_palette);
 		}
 	}
 		
@@ -51,10 +64,25 @@ void SudokuWidget::verify()
 				// set background color depending on the validity of the cell value
 				if (solved) {
 					child_palette.setColor(QPalette::Base, globalSettings().colorSolved());
+					sudokuwidget_value[row][column]->setPalette(child_palette);
 				} else if (!values.cell(row, column).valid()) {
 					child_palette.setColor(QPalette::Base, globalSettings().colorInvalidValue());
+					sudokuwidget_value[row][column]->setPalette(child_palette);
 				}
-				sudokuwidget_value[row][column]->setPalette(child_palette);
+			} else if ((i == 0) && (m_showHintUnique)) {
+				// cell is empty, check if it has a unique solution
+				int possibilities = 0;
+				for (int value = 0; value < 9; value++) {
+					if (values.cell(row, column).possibility(value)) {
+						possibilities++;
+					}
+				}
+				if (possibilities == 1) {
+					child_palette.setColor(QPalette::Base, globalSettings().colorHintUnique());
+					sudokuwidget_value[row][column]->setPalette(child_palette);
+				}
+			
+				
 			}
 		}
 	}
@@ -73,20 +101,14 @@ void SudokuWidget::set_values(const Sudoku & values)
 {	
 	for (int row = 0; row < 9; row++) {
 		for (int column = 0; column < 9 ; column++) {
-			QPalette child_palette(palette());
 			int i = values.cell(row, column).value();
 			if (i > 0) {
 				QString str = QString::number(i);		
 				sudokuwidget_value[row][column]->setText(str);
 				
-				// set background color depending on the validity of the cell value
-				if (!values.cell(row, column).valid()) {
-					child_palette.setColor(QPalette::Base, globalSettings().colorInvalidValue());
-				}
 			} else {
 				sudokuwidget_value[row][column]->clear();
 			}
-			sudokuwidget_value[row][column]->setPalette(child_palette);
 		}
 	}
 	

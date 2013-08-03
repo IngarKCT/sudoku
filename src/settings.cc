@@ -16,7 +16,8 @@ Settings::Settings() :
 	m_homePath(),
 	m_colorInvalidValue(255, 0, 0),
 	m_colorInputError(195, 195, 195),
-	m_colorSolved(192, 255, 192)
+	m_colorSolved(192, 255, 192),
+	m_colorHintUnique(255, 255, 127)
 {
 #ifdef _WIN32
 	// get the full path for "Applicaton Data"

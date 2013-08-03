@@ -24,6 +24,11 @@ SolverWindow::SolverWindow()
 	setLayout(windowlayout);
 }
 
+const bool SolverWindow::showHintUnique() const
+{
+	return solverwindow_sudokuwidget->showHintUnique();
+}
+
 void SolverWindow::openFromFile(const QString & filename)
 {
 	QFile file(filename);
@@ -187,7 +192,7 @@ void SolverWindow::doStep()
 	}
 	
 	Sudoku solution(sudoku);
-	int solved = solution.solve_rules();
+	int solved = solution.solve_coverage() + solution.solve_constraints();
 	if (solved == 0) {
 		QMessageBox::warning(this, tr("Step"), tr("No more cells to solve!"));
 		return;
@@ -315,6 +320,11 @@ void SolverWindow::doValidate()
 	}
 	
 	QMessageBox::warning(this, tr("Validate"), tr("This sudoku is valid but can not be solved!"));
+}
+
+void SolverWindow::doShowHintUnique()
+{
+	solverwindow_sudokuwidget->setShowHintUnique(!solverwindow_sudokuwidget->showHintUnique());
 }
 
 void SolverWindow::step_constraints()

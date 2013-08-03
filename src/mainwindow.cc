@@ -114,6 +114,12 @@ void MainWindow::initActions()
 	action_validate ->setStatusTip(tr("Validate the sudoku"));
 	connect(action_validate, SIGNAL(triggered()), this, SLOT(doValidate()));
 	
+	// Settings -> Show Unique
+	action_hintunique = new QAction(tr("Mark solveable"), this);
+	action_hintunique->setStatusTip(tr("Mark cells with a unique solution"));
+	action_hintunique->setCheckable(true);
+	connect(action_hintunique, SIGNAL(triggered()), this, SLOT(doShowHintUnique()));
+	
 	// Help -> About
 	action_about = new QAction(tr("About..."), this);
 	action_about ->setStatusTip(tr("About %1").arg(PACKAGE_NAME));
@@ -142,6 +148,9 @@ void MainWindow::initMenus()
 	mainwindow_movemenu->addSeparator();
 	mainwindow_movemenu->addAction(action_validate);
 	
+	mainwindow_settingsmenu = menuBar()->addMenu(tr("&Settings"));
+	mainwindow_settingsmenu->addAction(action_hintunique);
+	
 	mainwindow_helpmenu = menuBar()->addMenu(tr("&Help"));
 	mainwindow_helpmenu->addAction(action_about);
 }
@@ -166,6 +175,8 @@ void MainWindow::updateTitle()
 		
 		action_revert->setEnabled(true);
 	}
+	
+	action_hintunique->setChecked(mainwindow_solverwindow->showHintUnique());
 }
 
 void MainWindow::updateStatus(const QString & text)
@@ -206,6 +217,13 @@ void MainWindow::doRevert()
 void MainWindow::doValidate()
 {
 	mainwindow_solverwindow->doValidate();
+}
+
+
+void MainWindow::doShowHintUnique()
+{
+	mainwindow_solverwindow->doShowHintUnique();
+	updateTitle();
 }
 
 void MainWindow::doQuit()

@@ -30,6 +30,8 @@ private slots:
 	
 	void doValidate();
 	
+	void doShowHintUnique();
+	
 	void doAbout();
 
 private:
@@ -40,6 +42,7 @@ private:
 	SolverWindow	*mainwindow_solverwindow;
 	QMenu		*mainwindow_gamemenu;
 	QMenu		*mainwindow_movemenu;
+	QMenu		*mainwindow_settingsmenu;
 	QMenu		*mainwindow_helpmenu;
 	
 	// Game menu actions
@@ -57,6 +60,9 @@ private:
 	QAction		*action_solve;
 	QAction		*action_search;
 	QAction		*action_validate;
+	
+	// Settings menu actions
+	QAction		*action_hintunique;
 	
 	// Help menu actions
 	QAction		*action_about;

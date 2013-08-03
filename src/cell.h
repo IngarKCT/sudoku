@@ -30,10 +30,12 @@ public:
 	/**
 	 * @brief return true of the current value for this cell is a valid possibility
 	 * */
+	// FIXME the bool valid() should be replaced with a state() enum to indicate
+	// the difference between Input Error and Invalid Values
 	inline bool valid() const { return cell_valid; }
 	
 	/**
-	 * @brief return the current value for this cell_possibility
+	 * @brief return the current value for this cell
 	 * */
 	inline int value() const { return cell_value; }
 
