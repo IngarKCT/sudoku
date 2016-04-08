@@ -4,7 +4,7 @@ SUDOKU SOLVER - README
 	I'm not a fervent sudoku solver but I always wanted to try implementing
 	a program to solve the puzzles faster than I can. This is my first attempt.
 	
-	This program uses the Qt 4.x library for its user interface, you will need
+	This program uses Qt 5 for its user interface, you will need
 	to have it installed to build or run the program.
 	
 BUILDING INSTRUCTIONS
@@ -14,13 +14,13 @@ BUILDING INSTRUCTIONS
 		autoreconf -i
 		mkdir build
 		cd build
-		../configure
+		../configure --with-qt-includes=/usr/include/qt
 		make
 			
-	The binary will be called 'sudokusolver' and be located in the 'src' directory.
+	The binary is called 'sudoku' and will be located in the 'src' directory.
 	You can run it from within the build directory:
 	
-		src/sudokusolver
+		src/sudoku
 
 USAGE
 
@@ -65,7 +65,7 @@ USAGE
 SAVE GAME FILE FORMAT
 
 	The file format is extremely simple: the files can be opened and edited
-	with a text editor. Note that unsolved positions are saved too
+	with a text editor. Unsolved positions are saved as well
 	and are indicated by zeroes.
 	
 	Example:
@@ -84,7 +84,7 @@ SAVE GAME FILE FORMAT
 
 	While the file format is optimized for readability, the program will
 	actually ignore extra whitespace while loading a file. This allows you to
-	load games from a simple file with a sequence if 81 numbers.
+	load games from a simple file with a sequence of 81 numbers.
 	
 ALGORITHM
 
@@ -92,17 +92,19 @@ ALGORITHM
 	two sets of sudoko constraints: the sudoku elimination rules, 
 	where every number from 1 to 9 can only appear once in every row, column and subgrid,
 	and the sudoko inclusion rules, where every number has to appear exactly once
-	in every row, column and subgrid,
+	in every row, column and subgrid.
 	
 	The search solver will apply constraints until there are no cells left with a unique solution.
-	From there, it will pick a random unsolved cell and fill it with one of the remaining possibilities.
-	From there it recurses into the next iteration.
+	From there, it will pick a random unsolved cell, fill it with one of the remaining possibilities
+	and recurse into the next iteration. 
 	
 COPYRIGHT
 
 	This sudoku solver was written by Stijn "Ingar" Buys and is available under
 	the terms and conditions of the GNU Public License, version 3 or higher.
 	
-	Copyright (c) 2012-2013
+	Copyright (c) 2012-2016
 	ingar@osirion.org
+
 	http://ingar.satgnu.net
+

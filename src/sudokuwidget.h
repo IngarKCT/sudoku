@@ -2,7 +2,7 @@
 #ifndef __INCLUDED_SUDOKUSOLVER_SUDOKUWIDGET__
 #define __INCLUDED_SUDOKUSOLVER_SUDOKUWIDGET__
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QWidget>
 
 #include "sudoku.h"

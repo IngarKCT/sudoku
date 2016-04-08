@@ -19,9 +19,9 @@ dnl
 AC_MSG_CHECKING(Qt installation prefix)
 QTDIR=xxx
 AC_ARG_WITH([qt-prefix],
-             AC_HELP_STRING([--with-qt-prefix=], [to specify the path to the Qt 4.8 installation prefix.]),
+             AC_HELP_STRING([--with-qt-prefix=], [to specify the path to the Qt installation prefix.]),
              [QTPATHS="$withval"],
-             [QTPATHS="/usr /usr/qt4 /opt/qt4"])
+             [QTPATHS="/usr /usr/qt"])
 
 for x in $QTPATHS; do
     if test -d $x ; then
@@ -29,7 +29,7 @@ for x in $QTPATHS; do
     fi
 done
 if test $QTDIR = xxx ; then
-   AC_MSG_ERROR(Could not locate Qt 4.8)
+   AC_MSG_ERROR(Could not locate Qt)
 fi
 AC_MSG_RESULT($QTDIR)
 
@@ -39,7 +39,7 @@ dnl
 AC_MSG_CHECKING(Qt includes directory)
 
 AC_ARG_WITH([qt-includes],
-             AC_HELP_STRING([--with-qt-includes=], [to specify the path to directory containing the Qt 4.8 includes.]),
+             AC_HELP_STRING([--with-qt-includes=], [to specify the path to directory containing the Qt includes.]),
              [QTINCLUDEDIR="$withval"],
              [QTINCLUDEDIR="$QTDIR/include"])
 AC_MSG_RESULT($QTINCLUDEDIR)
@@ -49,7 +49,7 @@ dnl libraries directory
 dnl             
 AC_MSG_CHECKING(Qt libraries directory)
 AC_ARG_WITH([qt-libraries],
-             AC_HELP_STRING([--with-qt-libraries=], [to specify the path to directory containing the Qt 4.8 libraries.]),
+             AC_HELP_STRING([--with-qt-libraries=], [to specify the path to directory containing the Qt libraries.]),
              [QTLIBDIR="$withval"],
              [QTLIBDIR="$QTDIR/lib"])
 AC_MSG_RESULT($QTLIBDIR)
@@ -59,16 +59,16 @@ host=`uname -a`
 case "$host" in
 	MINGW32*)
 		AC_MSG_RESULT(win32)
-		QTLIBS="-L$QTLIBDIR -lgdi32 -luser32 -lmingw32 -lqtmain -lQtGui4 -lQtCore4 -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-s -Wl,-subsystem,windows"
-		QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/QtGui -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
+		QTLIBS="-L$QTLIBDIR -lgdi32 -luser32 -lmingw32 -lqtmain -lQt5Widgets -lQt5Gui -lQt5Core -mthreads -Wl,-enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc -Wl,-s -Wl,-s -Wl,-subsystem,windows"
+		QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/QtGui -I$QTINCLUDEDIR/QtWidgets -DUNICODE -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -DQT_NEEDS_QMAIN -frtti -fexceptions"
 		QTBIN="$QTDIR/bin"
 		EXEICON="icon.o"
 		;;
 	*)
 		AC_MSG_RESULT(generic unix)
 		AC_PATH_XTRA
-		QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtGui -I$QTINCLUDEDIR/QtCore $X_CFLAGS -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED"
-		QTLIBS="-Wl,-rpath,QTLIBDIR -L$QTLIBDIR -lQtGui -lQtCore -lpthread"
+		QTINC="-I$QTINCLUDEDIR -I$QTINCLUDEDIR/QtGui -I$QTINCLUDEDIR/QtCore -I$QTINCLUDEDIR/QtWidgets -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED"
+		QTLIBS="-Wl,-rpath,QTLIBDIR -L$QTLIBDIR -lQt5Widgets -lQt5Gui -lQt5Core -lpthread"
 		QTBIN="$QTDIR/bin"
 		EXEICON=""
 		;;
@@ -81,7 +81,16 @@ INCLUDES="$INCLUDES $QTINC"
 PATH="$PATH:$QTBIN"
 CXXFLAGS="$CXXFLAGS $QTINC"
 
-# Now we check whether we can actually build a Qt app.
+AC_MSG_CHECKING(if the compiler accepts -fPIC)
+SAVED_CXXFLAGS="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS -fPIC"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])],
+    [AC_MSG_RESULT(yes)
+     CXXFLAGS="$SAVED_CXXFLAGS -fPIC"],
+    [AC_MSG_RESULT(no)
+     CXXFLAGS="$SAVED_CXXFLAGS"])
+
+dnl Now we check whether we can actually build a Qt app.
 cat > myqt.h << EOF
 #include <QObject>
 class Test : public QObject

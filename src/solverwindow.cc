@@ -6,7 +6,7 @@
 
 #include "config.h"
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QDir>
 #include <QHBoxLayout>
 #include <QVBoxLayout>

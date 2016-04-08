@@ -7,10 +7,10 @@ moc_%.cc: %.h
 .rc.o:
 	windres $< -o $@
 
-bin_PROGRAMS = sudokusolver
+bin_PROGRAMS = sudoku
 
 # Project C++ source files
-sudokusolver_SOURCES = \
+sudoku_SOURCES = \
 	cell.cc \
 	main.cc \
 	mainwindow.cc \
@@ -19,17 +19,17 @@ sudokusolver_SOURCES = \
 	sudoku.cc \
 	sudokuwidget.cc
 	
-EXTRA_sudokusolver_SOURCES = \
+EXTRA_sudoku_SOURCES = \
 	icon.rc
 
-sudokusolver_DEPENDENCIES = \
+sudoku_DEPENDENCIES = \
 	$(EXEICON)
 
-sudokusolver_LDADD =\
+sudoku_LDADD =\
 	$(EXEICON)
 	
 # moc generated C++ source files
-nodist_sudokusolver_SOURCES = \
+nodist_sudoku_SOURCES = \
 	moc_mainwindow.cc \
 	moc_solverwindow.cc \
 	moc_sudokuwidget.cc
