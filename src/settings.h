@@ -1,7 +1,7 @@
 #ifndef __INCLUDED_SUDOKUSOLVER_SETTINGS__
 #define __INCLUDED_SUDOKUSOLVER_SETTINGS__
 
-#include <QtGui>
+#include <QtWidgets>
 
 class Settings {
 public:

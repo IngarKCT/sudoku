@@ -2,7 +2,7 @@
 #ifndef __INCLUDED_SUDOKUSOLVER_MAINWINDOW__
 #define __INCLUDED_SUDOKUSOLVER_MAINWINDOW__
 
-#include <QtGui> 
+#include <QtWidgets> 
 #include <QMainWindow>
 
 class SudokuWidget;
