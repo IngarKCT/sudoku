@@ -56,6 +56,11 @@ USAGE
 		and will guess (search) for a solution as required.
 		
 		The VALIDATE option will verify if the current puzzel is valid.
+
+	SETTINGS menu
+
+		The MARK SOLVEABLE option will, if enabled, mark cells that can be
+		solved without guessing in yellow.
 	
 SAVE GAME FILE FORMAT
 
